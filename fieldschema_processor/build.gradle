@@ -1,0 +1,12 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+group='com.github.jitpack'
+version '1.0'
+
+targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+  implementation 'com.squareup:javapoet:1.10.0'
+}
