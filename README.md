@@ -15,7 +15,7 @@ allprojects {
 dependencies {
     implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.0.0'
     implementation 'com.github.yatatsu.FieldSchema:annotations:0.3.0'
-    kapt 'com.github.andob:fieldschema_processor:v1.0.0'
+    kapt 'com.github.andob.FieldSchema:processor:0.3.1'
 }
 ```
 
