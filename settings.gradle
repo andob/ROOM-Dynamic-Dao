@@ -1,1 +1,1 @@
-include ':sample', ':dyndao', ':fieldschema_processor'
+include ':sample', ':dyndao'

@@ -46,14 +46,14 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
         tokens.innerJoin(
             table = FS.Restaurant,
             column = FS.Restaurant_cityId,
-            remoteTableName = FS.City,
-            remoteTableColumn = FS.City_id)
+            remoteTable = FS.City,
+            remoteColumn = FS.City_id)
 
         tokens.innerJoin(
             table = FS.City,
             column = FS.City_countryId,
-            remoteTableName = FS.Country,
-            remoteTableColumn = FS.Country_id)
+            remoteTable = FS.Country,
+            remoteColumn = FS.Country_id)
 
         return tokens.build()
     }

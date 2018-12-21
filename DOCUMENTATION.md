@@ -4,7 +4,12 @@
 
 ### Table of contents
 
-### QueryBuilder methods overview
+1. [QueryBuilder methods overview](#overview)
+2. [How to build where conditions](#where)
+3. [How to join other tables](#join)
+4. [How to project columns from tables](#project)
+
+### QueryBuilder methods overview <a name="overview"></a>
 
 ```kotlin
 class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
@@ -31,7 +36,7 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
 }
 ```
 
-### How to build where conditions
+### How to build where conditions <a name="where"></a>
 
 Use ``addSearchTokens`` for search conditions:
 
@@ -102,7 +107,7 @@ Or number arrays or collections:
 
 Result: ``id in (1, 5)``
 
-### How to join other tables
+### How to join other tables <a name="join"></a>
 
 Consider we add 
 
@@ -161,14 +166,14 @@ override fun join(tokens: QueryJoinTokens) : String?
     tokens.innerJoin(
         table = FS.Restaurant,
         column = FS.Restaurant_cityId,
-        remoteTableName = FS.City,
-        remoteTableColumn = FS.City_id)
+        remoteTable = FS.City,
+        remoteColumn = FS.City_id)
 
     tokens.innerJoin(
         table = FS.City,
         column = FS.City_countryId,
-        remoteTableName = FS.Country,
-        remoteTableColumn = FS.Country_id)
+        remoteTable = FS.Country,
+        remoteColumn = FS.Country_id)
 
     return tokens.build()
 }
@@ -197,7 +202,7 @@ to
 fun getList(query : SupportSQLiteQuery) : List<RestaurantJoin>
 ```
 
-### How to project columns from tables
+### How to project columns from tables <a name="project"></a>
 
 ```kotlin
 override fun projection(tokens: QueryProjectionTokens): String
