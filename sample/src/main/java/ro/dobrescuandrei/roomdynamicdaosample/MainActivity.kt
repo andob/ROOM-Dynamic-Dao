@@ -49,9 +49,12 @@ class MainActivity : AppCompatActivity()
             else database.restaurantDao().getAllWithRating(filter.rating?:0)
         }
 
-        val restaurants1=database.restaurantDao().getList(RestaurantListQueryBuilder(search = search, filter = filter).build())
+        if (filter!=null)
+        {
+            val restaurants1=database.restaurantDao().getList(RestaurantListQueryBuilder(filter).build())
 
-        println(restaurants)
-        println(restaurants1)
+            println(restaurants)
+            println(restaurants1)
+        }
     }
 }

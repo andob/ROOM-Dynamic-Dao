@@ -3,13 +3,11 @@ package ro.dobrescuandrei.roomdynamicdao
 import android.arch.persistence.db.SimpleSQLiteQuery
 import android.arch.persistence.db.SupportSQLiteQuery
 import android.text.TextUtils
+import ro.andreidobrescu.basefilter.BaseFilter
 
-abstract class QueryBuilder<FILTER>
+abstract class QueryBuilder<FILTER : BaseFilter>
 (
-    val search: String?,
-    val filter: FILTER?,
-    val limit: Int = Int.MAX_VALUE,
-    val offset: Int = 0
+    val filter: FILTER
 )
 {
     fun build(): SupportSQLiteQuery
@@ -33,8 +31,8 @@ abstract class QueryBuilder<FILTER>
 
         if (enablePagination())
         {
-            sql+=" limit $limit "
-            sql+=" offset $offset "
+            sql+=" limit ${filter.limit} "
+            sql+=" offset $${filter.offset} "
         }
 
         return SimpleSQLiteQuery(sql)

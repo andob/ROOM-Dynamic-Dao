@@ -7,19 +7,19 @@ import ro.dobrescuandrei.roomdynamicdaosample.model.RestaurantFilter
 
 class RestaurantListQueryBuilder : QueryBuilder<RestaurantFilter>
 {
-    constructor(search: String?, filter: RestaurantFilter?, limit: Int = Int.MAX_VALUE, offset: Int = 0) : super(search, filter, limit, offset)
+    constructor(filter: RestaurantFilter) : super(filter)
 
     override fun tableName(): String? = FS.Restaurant
 
     override fun where(tokens: QueryWhereTokens): String?
     {
-        if (search!=null)
-            tokens.addSearchTokens(search, onColumns = arrayOf(FS.Restaurant_name))
+        if (filter.search!=null)
+            tokens.addSearchTokens(filter.search, onColumns = arrayOf(FS.Restaurant_name))
 
-        if (filter?.rating!=null)
+        if (filter.rating!=null)
             tokens.add("${FS.Restaurant_rating} = ${filter.rating}")
 
-        if (filter?.boundingBox!=null)
+        if (filter.boundingBox!=null)
         {
             tokens.add("${FS.Restaurant_latitude}  <= ${filter.boundingBox?.northWestLat}")
             tokens.add("${FS.Restaurant_latitude}  >= ${filter.boundingBox?.southEastLat}")

@@ -6,7 +6,7 @@ import ro.dobrescuandrei.roomdynamicdaosample.model.RestaurantFilter
 
 class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
 {
-    constructor(search: String?, filter: RestaurantFilter?, limit: Int = Int.MAX_VALUE, offset: Int = 0) : super(search, filter, limit, offset)
+    constructor(filter: RestaurantFilter) : super(filter)
 
     //used to specify table name
     override fun tableName(): String? = FS.Restaurant

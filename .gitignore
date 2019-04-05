@@ -22,3 +22,6 @@ hs_err_pid*
 build/
 out/
 gradle/
+sample/build/
+dyndao/build/
+basefilter/build/
