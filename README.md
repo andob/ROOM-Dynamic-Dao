@@ -13,7 +13,7 @@ allprojects {
 ```
 ```
 dependencies {
-    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.0.0'
+    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.0.1'
     implementation 'com.github.yatatsu.FieldSchema:annotations:0.3.0'
     kapt 'com.github.andob.FieldSchema:processor:0.3.1'
 }
@@ -133,24 +133,45 @@ Annotate your model with ``FieldSchemaClass``. The annotation processor will gen
 class Restaurant
 ``` 
 
+Create a filter model for your main model:
+
+```kotlin
+class RestaurantFilter : BaseFilter()
+{
+    var rating : Int? = null
+    var boundingBox : BoundingBox? = null
+}
+```
+
+``BaseFilter`` is a class from this library with the following structure:
+
+```kotlin
+open class BaseFilter
+(
+    var search : String? = null,
+    var offset : Int = 0,
+    var limit : Int = Int.MAX_VALUE
+) : Serializable
+```
+
 Create a class that extends QueryBuilder:
 
 ```kotlin
 class RestaurantListQueryBuilder : QueryBuilder<RestaurantFilter>
 {
-    constructor(search: String?, filter: RestaurantFilter?, limit: Int = Int.MAX_VALUE, offset: Int = 0) : super(search, filter, limit, offset)
+    constructor(filter: RestaurantFilter) : super(filter)
 
     override fun tableName(): String? = FS.Restaurant
 
     override fun where(tokens: QueryWhereTokens): String?
     {
-        if (search!=null)
-            tokens.addSearchTokens(search, onColumns = arrayOf(FS.Restaurant_name))
+        if (filter.search!=null)
+            tokens.addSearchTokens(filter.search, onColumns = arrayOf(FS.Restaurant_name))
 
-        if (filter?.rating!=null)
+        if (filter.rating!=null)
             tokens.add("${FS.Restaurant_rating} = ${filter.rating}")
 
-        if (filter?.boundingBox!=null)
+        if (filter.boundingBox!=null)
         {
             tokens.add("${FS.Restaurant_latitude}  <= ${filter.boundingBox?.northWestLat}")
             tokens.add("${FS.Restaurant_latitude}  >= ${filter.boundingBox?.southEastLat}")
@@ -158,9 +179,6 @@ class RestaurantListQueryBuilder : QueryBuilder<RestaurantFilter>
             tokens.add("${FS.Restaurant_longitude} <= ${filter.boundingBox?.southEastLng}")
         }
 
-        //use and when conditions from where statement are linked by and keyword
-        //(where name like ... and rating ... and latitude ... and logitude ...)
-        //You can also use or.
         return tokens.and()
     }
 }
@@ -177,7 +195,7 @@ interface RestaurantDao
 
 ```kotlin
 val restaurants=database.restaurantDao().getList(
-	RestaurantListQueryBuilder(search = search, filter = filter).build())
+	RestaurantListQueryBuilder(filter).build())
 ```
 
 Sweet! Zero boilerplate!
