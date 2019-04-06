@@ -32,7 +32,7 @@ abstract class QueryBuilder<FILTER : BaseFilter>
         if (enablePagination())
         {
             sql+=" limit ${filter.limit} "
-            sql+=" offset $${filter.offset} "
+            sql+=" offset ${filter.offset} "
         }
 
         return SimpleSQLiteQuery(sql)
