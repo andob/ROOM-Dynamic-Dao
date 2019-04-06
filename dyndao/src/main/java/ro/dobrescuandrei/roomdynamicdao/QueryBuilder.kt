@@ -1,7 +1,7 @@
 package ro.dobrescuandrei.roomdynamicdao
 
-import android.arch.persistence.db.SimpleSQLiteQuery
-import android.arch.persistence.db.SupportSQLiteQuery
+import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 import android.text.TextUtils
 import ro.andreidobrescu.basefilter.BaseFilter
 

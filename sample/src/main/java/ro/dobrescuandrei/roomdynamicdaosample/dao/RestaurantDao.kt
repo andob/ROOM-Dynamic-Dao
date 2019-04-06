@@ -1,10 +1,10 @@
 package ro.dobrescuandrei.roomdynamicdaosample.dao
 
-import android.arch.persistence.db.SupportSQLiteQuery
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
-import android.arch.persistence.room.RawQuery
+import androidx.sqlite.db.SupportSQLiteQuery
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.RawQuery
 import ro.dobrescuandrei.roomdynamicdaosample.model.Restaurant
 
 @Dao

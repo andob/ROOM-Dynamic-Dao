@@ -1,7 +1,7 @@
 package ro.dobrescuandrei.roomdynamicdaosample
 
-import android.arch.persistence.room.Room
-import android.support.v7.app.AppCompatActivity
+import androidx.room.Room
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ro.dobrescuandrei.roomdynamicdaosample.dao.querybuilder.RestaurantListQueryBuilder
 import ro.dobrescuandrei.roomdynamicdaosample.model.RestaurantFilter
