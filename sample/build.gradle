@@ -26,7 +26,8 @@ dependencies {
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     kapt 'android.arch.persistence.room:compiler:1.1.1'
 
-    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.0.1'
+//    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.0.1''
+    implementation project(":dyndao")
     implementation 'com.github.yatatsu.FieldSchema:annotations:0.3.0'
     kapt 'com.github.andob.FieldSchema:processor:0.3.1'
 }

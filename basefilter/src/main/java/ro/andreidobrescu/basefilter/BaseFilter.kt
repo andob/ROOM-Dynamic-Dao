@@ -6,5 +6,5 @@ open class BaseFilter
 (
     var search : String? = null,
     var offset : Int = 0,
-    var limit : Int = Int.MAX_VALUE
+    var limit : Int = 100
 ) : Serializable
