@@ -1,8 +1,8 @@
 package ro.dobrescuandrei.roomdynamicdao
 
+import android.text.TextUtils
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
-import android.text.TextUtils
 import ro.andreidobrescu.basefilter.BaseFilter
 
 abstract class QueryBuilder<FILTER : BaseFilter>
