@@ -7,10 +7,10 @@ import ro.andreidobrescu.basefilter.BaseFilter
 
 abstract class QueryBuilder<FILTER : BaseFilter>
 (
-    val filter: FILTER
+    val filter : FILTER
 )
 {
-    fun build(): SupportSQLiteQuery
+    fun build() : SupportSQLiteQuery
     {
         var sql = "select ${projection(QueryProjectionTokens())} from ${tableName()} "
 
@@ -38,10 +38,17 @@ abstract class QueryBuilder<FILTER : BaseFilter>
         return SimpleSQLiteQuery(sql)
     }
 
-    open fun orderBy(): String? = null
-    open fun enablePagination() : Boolean = false
+    abstract fun tableName() : String?
     open fun projection(tokens : QueryProjectionTokens) = "*"
     open fun join(tokens : QueryJoinTokens) : String? = null
-    abstract fun tableName(): String?
-    abstract fun where(tokens: QueryWhereTokens): String?
+    abstract fun where(tokens : QueryWhereTokens) : String?
+    open fun orderBy() : String? = null
+    open fun enablePagination() : Boolean = false
+
+    val String.sqlEscaped get() = SQLEscape.string(this)
+    val IntArray.sqlEscaped get() = SQLEscape.numberArray(this)
+    val LongArray.sqlEscaped get() = SQLEscape.numberArray(this)
+    val DoubleArray.sqlEscaped get() = SQLEscape.numberArray(this)
+    val FloatArray.sqlEscaped get() = SQLEscape.numberArray(this)
+    val Boolean.sqlEscaped get() = SQLEscape.boolean(this)
 }

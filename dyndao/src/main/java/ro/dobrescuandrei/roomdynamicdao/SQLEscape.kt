@@ -66,6 +66,9 @@ object SQLEscape
         return tokens(tokens, delimitedBy = ",")
     }
 
+    fun boolean(value : Boolean) : Int =
+        if (value) 1 else 0
+
     fun tokens(tokens : List<String>, delimitedBy : String) : String
     {
         val stringBuilder=StringBuilder()
