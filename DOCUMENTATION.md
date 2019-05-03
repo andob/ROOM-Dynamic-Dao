@@ -91,21 +91,27 @@ Result: ``where (id = 1 and rating = 5) or (id = 2 and rating = 3)``
 
 Don't forget to ESCAPE STRINGS:
 
-``tokens.add("${FS.Restaurant_name} = '${SQLEscape.string("asdf")}'")``
+``tokens.add("${FS.Restaurant_name} = '${"asdf".sqlEscaped}'")``
 
 Result: ``name = 'asdf'``
 
 Or string arrays or collections:
 
-``tokens.add("${FS.Restaurant_name} in (${SQLEscape.stringArray(arrayOf("asdf", "qwerty"))})")``
+``tokens.add("${FS.Restaurant_name} in (${arrayOf("asdf", "qwerty").sqlEscaped})")``
 
 Result: ``name in ('asdf','qwerty')``
 
 Or number arrays or collections:
 
-``tokens.add("${FS.Restaurant_id} in (${SQLEscape.numberArray(intArrayOf(1, 5))})")``
+``tokens.add("${FS.Restaurant_id} in (${intArrayOf(1, 5).sqlEscaped})")``
 
 Result: ``id in (1, 5)``
+
+Or booleans:
+
+``tokens.add("${FS.Restaurant_isActive} = ${true.sqlEscaped}")``
+
+Result: ``isActive = 1``
 
 ### How to join other tables <a name="join"></a>
 
