@@ -13,7 +13,7 @@ allprojects {
 ```
 ```
 dependencies {
-    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.0.7'
+    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.0.8'
     implementation 'com.github.yatatsu.FieldSchema:annotations:0.3.0'
     kapt 'com.github.andob.FieldSchema:processor:0.3.1'
 }
