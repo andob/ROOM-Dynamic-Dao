@@ -24,7 +24,7 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
     override fun where(tokens: QueryWhereTokens): String? = "1=1"
 
     //enable pagination. By default, pagination is DISABLED
-    //to change this default behavior, see [How to change default settings section](#defaults)
+    //to change this default behavior, see How to change default settings section
     override fun enablePagination() : Boolean = true
 
     //column projections
