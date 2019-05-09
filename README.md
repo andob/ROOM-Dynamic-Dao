@@ -13,7 +13,7 @@ allprojects {
 ```
 ```
 dependencies {
-    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.0.6'
+    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.0.7'
     implementation 'com.github.yatatsu.FieldSchema:annotations:0.3.0'
     kapt 'com.github.andob.FieldSchema:processor:0.3.1'
 }
@@ -150,7 +150,7 @@ open class BaseFilter
 (
     var search : String? = null,
     var offset : Int = 0,
-    var limit : Int = 100
+    var limit : Int = BaseFilterDefaults.limit
 ) : Serializable
 ```
 

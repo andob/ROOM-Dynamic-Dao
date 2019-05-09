@@ -43,7 +43,7 @@ abstract class QueryBuilder<FILTER : BaseFilter>
     open fun join(tokens : QueryJoinTokens) : String? = null
     abstract fun where(tokens : QueryWhereTokens) : String?
     open fun orderBy() : String? = null
-    open fun enablePagination() : Boolean = false
+    open fun enablePagination() : Boolean = QueryBuilderDefaults.enablePagination
 
     val String.sqlEscaped get() = SQLEscape.string(this)
     val IntArray.sqlEscaped get() = SQLEscape.numberArray(this)

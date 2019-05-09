@@ -8,6 +8,7 @@
 2. [How to build where conditions](#where)
 3. [How to join other tables](#join)
 4. [How to project columns from tables](#project)
+5. [How to change default settings](#defaults)
 
 ### QueryBuilder methods overview <a name="overview"></a>
 
@@ -23,6 +24,7 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
     override fun where(tokens: QueryWhereTokens): String? = "1=1"
 
     //enable pagination. By default, pagination is DISABLED
+    //to change this default behavior, see [How to change default settings section](#defaults)
     override fun enablePagination() : Boolean = true
 
     //column projections
@@ -233,4 +235,19 @@ Result:
 select Restaurant.*,
        City.name as cityName,
        Country.name as countryName
+```
+
+### How to change default settings <a name="defaults"></a>
+
+```kotlin
+class App : Application()
+{
+    override fun onCreate()
+    {
+        super.onCreate()
+
+        BaseFilterDefaults.limit=10000
+        QueryBuilderDefaults.enablePagination=true
+    }
+}
 ```

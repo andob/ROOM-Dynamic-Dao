@@ -6,11 +6,5 @@ open class BaseFilter
 (
     var search : String? = null,
     var offset : Int = 0,
-    var limit : Int = DefaultLimit
+    var limit : Int = BaseFilterDefaults.limit
 ) : Serializable
-{
-    companion object
-    {
-        var DefaultLimit : Int = 100
-    }
-}
