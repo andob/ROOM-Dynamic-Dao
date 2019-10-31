@@ -15,23 +15,23 @@
 ```kotlin
 class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
 {
-    constructor(search: String?, filter: RestaurantFilter?, limit: Int = Int.MAX_VALUE, offset: Int = 0) : super(search, filter, limit, offset)
+    constructor(filter: RestaurantFilter) : super(filter)
 
     //used to specify table name
-    override fun tableName(): String? = FS.Restaurant
+    override fun tableName() : String? = FS.Restaurant
 
     //used to specify where conditions
-    override fun where(tokens: QueryWhereTokens): String? = "1=1"
+    override fun where(conditions : QueryWhereConditions): String? = "1=1"
 
     //enable pagination. By default, pagination is DISABLED
     //to change this default behavior, see How to change default settings section
     override fun enablePagination() : Boolean = true
 
     //column projections
-    override fun projection(tokens: QueryProjectionTokens): String = "*"
+    override fun projection(clauses : QueryProjectionClauses): String = "*"
 
     //use for joins
-    override fun join(tokens: QueryJoinTokens): String? = null
+    override fun join(clauses : QueryJoinClauses): String? = null
 
     //specify order by
     override fun orderBy(): String? = "${FS.Restaurant_id} asc"
@@ -40,7 +40,7 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
 
 ### How to build where conditions <a name="where"></a>
 
-Use ``addSearchTokens`` for search conditions:
+Use ``addSearchConditions`` for search conditions:
 
 ```kotlin
 override fun where(conditions: QueryWhereConditions) : String?
@@ -80,7 +80,7 @@ override fun where(conditions : QueryWhereConditions) : String?
     firstConditionSet.add("${FS.Restaurant_rating} = 5")
     conditions.add("(${firstConditionSet.mergeWithAnd()})")
 
-    val secondConditionSet=QueryWhereTokens()
+    val secondConditionSet=QueryWhereConditions()
     secondConditionSet.add("${FS.Restaurant_id} = 2")
     secondConditionSet.add("${FS.Restaurant_rating} = 3")
     conditions.add("(${secondConditionSet.mergeWithAnd()})")
@@ -225,7 +225,7 @@ override fun projection(clauses : QueryProjectionClauses): String
         fromTable = FS.Country,
         projectAs = FS.RestaurantJoin_countryName)
 
-    return tokens.merge()
+    return clauses.merge()
 }
 ```
 
