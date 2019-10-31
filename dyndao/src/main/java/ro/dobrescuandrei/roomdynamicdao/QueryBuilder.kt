@@ -12,14 +12,14 @@ abstract class QueryBuilder<FILTER : BaseFilter>
 {
     fun build() : SupportSQLiteQuery
     {
-        var sql = "select ${projection(QueryProjectionTokens())} from ${tableName()} "
+        var sql = "select ${projection(QueryProjectionClauses())} from ${tableName()} "
 
-        join(QueryJoinTokens())?.let { join ->
+        join(QueryJoinClauses())?.let { join ->
             if (!TextUtils.isEmpty(join))
                 sql+=join
         }
 
-        where(QueryWhereTokens())?.let { where ->
+        where(QueryWhereConditions())?.let { where ->
             if (!TextUtils.isEmpty(where))
                 sql+=" where $where "
         }
@@ -39,16 +39,28 @@ abstract class QueryBuilder<FILTER : BaseFilter>
     }
 
     abstract fun tableName() : String?
-    open fun projection(tokens : QueryProjectionTokens) = "*"
-    open fun join(tokens : QueryJoinTokens) : String? = null
-    abstract fun where(tokens : QueryWhereTokens) : String?
+    open fun projection(clauses : QueryProjectionClauses) = "*"
+    open fun join(clauses : QueryJoinClauses) : String? = null
+    abstract fun where(conditions : QueryWhereConditions) : String?
     open fun orderBy() : String? = null
     open fun enablePagination() : Boolean = QueryBuilderDefaults.enablePagination
 
-    val String.sqlEscaped get() = SQLEscape.string(this)
-    val IntArray.sqlEscaped get() = SQLEscape.numberArray(this)
-    val LongArray.sqlEscaped get() = SQLEscape.numberArray(this)
-    val DoubleArray.sqlEscaped get() = SQLEscape.numberArray(this)
-    val FloatArray.sqlEscaped get() = SQLEscape.numberArray(this)
-    val Boolean.sqlEscaped get() = SQLEscape.boolean(this)
+    val String.sqlEscaped get() = SQLEscape.escapeString(this)
+    val IntArray.sqlEscaped get() = SQLEscape.escapeNumberArray(this)
+    val LongArray.sqlEscaped get() = SQLEscape.escapeNumberArray(this)
+    val DoubleArray.sqlEscaped get() = SQLEscape.escapeNumberArray(this)
+    val FloatArray.sqlEscaped get() = SQLEscape.escapeNumberArray(this)
+    val Boolean.sqlEscaped get() = SQLEscape.escapeBoolean(this)
+
+    val Array<*>.sqlEscaped get() =
+        if (firstOrNull()!=null&&first() is String)
+            SQLEscape.escapeStringArray(this as Array<String>)
+        else ""
+
+    val Collection<*>.sqlEscaped get() =
+        if (firstOrNull()!=null&&first() is String)
+            SQLEscape.escapeStringCollection(this as Collection<String>)
+        else if (firstOrNull()!=null&&first() is Number)
+            SQLEscape.escapeNumberCollection(this)
+        else ""
 }

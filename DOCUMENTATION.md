@@ -43,75 +43,75 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
 Use ``addSearchTokens`` for search conditions:
 
 ```kotlin
-override fun where(tokens: QueryWhereTokens) : String?
+override fun where(conditions: QueryWhereConditions) : String?
 {
-    tokens.addSearchTokens(search, onColumns = arrayOf(FS.Restaurant_name, FS.Restaurant_description))
-    return tokens.and()
+    conditions.addSearchConditions(search, onColumns = arrayOf(FS.Restaurant_name, FS.Restaurant_description))
+    return conditions.mergeWithAnd()
 }
 ```
 
 The result will be ``where name like '%search%' or description like '%search%'``
 
-Use ``and`` to generate a where condition set delimited by and:
+Use ``mergeWithAnd`` to generate a where condition set delimited by and:
 
 ```kotlin
-override fun where(tokens: QueryWhereTokens) : String?
+override fun where(conditions: QueryWhereConditions) : String?
 {
-    tokens.addSearchTokens(search, onColumns = arrayOf(FS.Restaurant_name, FS.Restaurant_description))
-    tokens.add("${FS.Restaurant_id} = 1")
-    tokens.add("${FS.Restaurant_rating} = 5")
-    return tokens.and()
+    conditions.addSearchConditions(search, onColumns = arrayOf(FS.Restaurant_name, FS.Restaurant_description))
+    conditions.add("${FS.Restaurant_id} = 1")
+    conditions.add("${FS.Restaurant_rating} = 5")
+    return conditions.mergeWithAnd()
 }
 ```
 
 Result: ``where (name like '%search%' or description like '%search%') and id = 1 and rating = 5``
 
-If you: ``return tokens.or()``
+If you: ``return conditions.mergeWithOr()``
 
 Result: ``where (name like '%search%' or description like '%search%') or id = 1 or rating = 5``
 
 You can also create complex conditions with paranthesis:
 
 ```kotlin
-override fun where(tokens: QueryWhereTokens) : String?
+override fun where(conditions : QueryWhereConditions) : String?
 {
-    val subtokens1=QueryWhereTokens()
-    subtokens1.add("${FS.Restaurant_id} = 1")
-    subtokens1.add("${FS.Restaurant_rating} = 5")
-    tokens.add("(${subtokens1.and()})")
+    val firstConditionSet=QueryWhereConditions()
+    firstConditionSet.add("${FS.Restaurant_id} = 1")
+    firstConditionSet.add("${FS.Restaurant_rating} = 5")
+    conditions.add("(${firstConditionSet.mergeWithAnd()})")
 
-    val subtokens2=QueryWhereTokens()
-    subtokens2.add("${FS.Restaurant_id} = 2")
-    subtokens2.add("${FS.Restaurant_rating} = 3")
-    tokens.add("(${subtokens2.and()})")
+    val secondConditionSet=QueryWhereTokens()
+    secondConditionSet.add("${FS.Restaurant_id} = 2")
+    secondConditionSet.add("${FS.Restaurant_rating} = 3")
+    conditions.add("(${secondConditionSet.mergeWithAnd()})")
     
-    return tokens.or()
+    return conditions.mergeWithOr()
 }
 ```
 
 Result: ``where (id = 1 and rating = 5) or (id = 2 and rating = 3)``
 
-Don't forget to ESCAPE STRINGS:
+### Don't forget to ESCAPE STRINGS:
 
-``tokens.add("${FS.Restaurant_name} = '${"asdf".sqlEscaped}'")``
+``conditions.add("${FS.Restaurant_name} = ${"asdf".sqlEscaped}")``
 
 Result: ``name = 'asdf'``
 
 Or string arrays or collections:
 
-``tokens.add("${FS.Restaurant_name} in (${arrayOf("asdf", "qwerty").sqlEscaped})")``
+``conditions.add("${FS.Restaurant_name} in ${arrayOf("asdf", "qwerty").sqlEscaped}")``
 
 Result: ``name in ('asdf','qwerty')``
 
 Or number arrays or collections:
 
-``tokens.add("${FS.Restaurant_id} in (${intArrayOf(1, 5).sqlEscaped})")``
+``conditions.add("${FS.Restaurant_id} in ${intArrayOf(1, 5).sqlEscaped}")``
 
 Result: ``id in (1, 5)``
 
 Or booleans:
 
-``tokens.add("${FS.Restaurant_isActive} = ${true.sqlEscaped}")``
+``conditions.add("${FS.Restaurant_isActive} = ${true.sqlEscaped}")``
 
 Result: ``isActive = 1``
 
@@ -169,21 +169,21 @@ class RestaurantJoin : Restaurant()
 Join tables:
 
 ```kotlin
-override fun join(tokens: QueryJoinTokens) : String?
+override fun join(clauses : QueryJoinClauses) : String?
 {
-    tokens.innerJoin(
+    clauses.addInnerJoin(
         table = FS.Restaurant,
         column = FS.Restaurant_cityId,
         remoteTable = FS.City,
         remoteColumn = FS.City_id)
 
-    tokens.innerJoin(
+    clauses.addInnerJoin(
         table = FS.City,
         column = FS.City_countryId,
         remoteTable = FS.Country,
         remoteColumn = FS.Country_id)
 
-    return tokens.build()
+    return clauses.merge()
 }
 ```
 
@@ -194,7 +194,7 @@ from Restaurant inner join City    on City.id    = Restaurant.cityId
                 inner join Country on Country.id = City.countryId
 ```
 
-You can also use ``crossJoin``, ``leftOuterJoin``, ``rightOuterJoin`` or ``fullOuterJoin``.
+You can also use ``addCrossJoin``, ``addLeftOuterJoin``, ``addRightOuterJoin`` or ``addFullOuterJoin``.
 
 On models, don't forget to add ``@ForeignKey``s. In DAO, don't forget to change
 
@@ -213,19 +213,19 @@ fun getList(query : SupportSQLiteQuery) : List<RestaurantJoin>
 ### How to project columns from tables <a name="project"></a>
 
 ```kotlin
-override fun projection(tokens: QueryProjectionTokens): String
+override fun projection(clauses : QueryProjectionClauses): String
 {
-    tokens.allFieldsFromTable(FS.Restaurant)
+    clauses.addAllFieldsFromTable(FS.Restaurant)
 
-    tokens.field(FS.City_name,
+    clauses.addField(FS.City_name,
         fromTable = FS.City,
         projectAs = FS.RestaurantJoin_cityName)
 
-    tokens.field(FS.Country_name,
+    clauses.addField(FS.Country_name,
         fromTable = FS.Country,
         projectAs = FS.RestaurantJoin_countryName)
 
-    return tokens.build()
+    return tokens.merge()
 }
 ```
 

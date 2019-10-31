@@ -9,53 +9,52 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
     constructor(filter: RestaurantFilter) : super(filter)
 
     //used to specify table name
-    override fun tableName(): String? = FS.Restaurant
+    override fun tableName() = FS.Restaurant
 
     //used to specify where conditions
-    override fun where(tokens: QueryWhereTokens) : String?
+    override fun where(conditions : QueryWhereConditions) : String?
     {
-        val tokens=QueryWhereTokens()
-        tokens.add("${FS.Restaurant_id} in (${SQLEscape.numberArray(intArrayOf(1, 5))})")
-        tokens.add("${FS.Restaurant_id} = 1")
-        tokens.add("${FS.Restaurant_rating} = 5")
-        return tokens.and()
+        conditions.add("${FS.Restaurant_id} in ${intArrayOf(1, 5).sqlEscaped}")
+        conditions.add("${FS.Restaurant_id} = 1")
+        conditions.add("${FS.Restaurant_rating} = 5")
+        return conditions.mergeWithAnd()
     }
 
     //enable pagination. By default, pagination is disabled
-    override fun enablePagination() : Boolean = true
+    override fun enablePagination() = true
 
     //column projections
-    override fun projection(tokens: QueryProjectionTokens): String
+    override fun projection(clauses : QueryProjectionClauses): String
     {
-        tokens.allFieldsFromTable(FS.Restaurant)
+        clauses.addAllFieldsFromTable(FS.Restaurant)
 
-        tokens.field(FS.City_name,
+        clauses.addField(FS.City_name,
             fromTable = FS.City,
             projectAs = FS.RestaurantJoin_cityName)
 
-        tokens.field(FS.Country_name,
+        clauses.addField(FS.Country_name,
             fromTable = FS.Country,
             projectAs = FS.RestaurantJoin_countryName)
 
-        return tokens.build()
+        return clauses.merge()
     }
 
     //use for joins
-    override fun join(tokens: QueryJoinTokens) : String?
+    override fun join(clauses : QueryJoinClauses) : String?
     {
-        tokens.innerJoin(
+        clauses.addInnerJoin(
             table = FS.Restaurant,
             column = FS.Restaurant_cityId,
             remoteTable = FS.City,
             remoteColumn = FS.City_id)
 
-        tokens.innerJoin(
+        clauses.addInnerJoin(
             table = FS.City,
             column = FS.City_countryId,
             remoteTable = FS.Country,
             remoteColumn = FS.Country_id)
 
-        return tokens.build()
+        return clauses.merge()
     }
 
     //specify order by

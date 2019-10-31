@@ -2,74 +2,73 @@ package ro.dobrescuandrei.roomdynamicdao
 
 import android.database.DatabaseUtils
 
-object SQLEscape
+internal object SQLEscape
 {
-    fun string(string : String) : String
+    fun escapeString(string : String) : String
     {
-        val escaped= DatabaseUtils.sqlEscapeString(string).substring(1)
-        return escaped.substring(0, escaped.length-1)
+        return DatabaseUtils.sqlEscapeString(string)
     }
 
-    fun stringArray(values : Array<String>) : String
-    {
-        val tokens=mutableListOf<String>()
-        for (token in values)
-            tokens.add("\"${string(token)}\"")
-        return tokens(tokens, delimitedBy = ",")
-    }
-
-    fun stringCollection(values : Collection<String>) : String
+    fun escapeStringArray(values : Array<String>) : String
     {
         val tokens=mutableListOf<String>()
         for (token in values)
-            tokens.add("\"${string(token)}\"")
-        return tokens(tokens, delimitedBy = ",")
+            tokens.add(escapeString(token))
+        return "(${mergeTokens(tokens, delimitedBy = ",")})"
     }
 
-    fun numberArray(values : IntArray) : String
+    fun escapeStringCollection(values : Collection<String>) : String
     {
         val tokens=mutableListOf<String>()
         for (token in values)
-            tokens.add("$token")
-        return tokens(tokens, delimitedBy = ",")
+            tokens.add(escapeString(token))
+        return "(${mergeTokens(tokens, delimitedBy = ",")})"
     }
 
-    fun numberArray(values : LongArray) : String
+    fun escapeNumberArray(values : IntArray) : String
     {
         val tokens=mutableListOf<String>()
         for (token in values)
             tokens.add("$token")
-        return tokens(tokens, delimitedBy = ",")
+        return "(${mergeTokens(tokens, delimitedBy = ",")})"
     }
 
-    fun numberArray(values : DoubleArray) : String
+    fun escapeNumberArray(values : LongArray) : String
     {
         val tokens=mutableListOf<String>()
         for (token in values)
             tokens.add("$token")
-        return tokens(tokens, delimitedBy = ",")
+        return "(${mergeTokens(tokens, delimitedBy = ",")})"
     }
 
-    fun numberArray(values : FloatArray) : String
+    fun escapeNumberArray(values : DoubleArray) : String
     {
         val tokens=mutableListOf<String>()
         for (token in values)
             tokens.add("$token")
-        return tokens(tokens, delimitedBy = ",")
+        return "(${mergeTokens(tokens, delimitedBy = ",")})"
     }
 
-    fun numberCollection(values : Collection<*>) : String
+    fun escapeNumberArray(values : FloatArray) : String
+    {
+        val tokens=mutableListOf<String>()
+        for (token in values)
+            tokens.add("$token")
+        return "(${mergeTokens(tokens, delimitedBy = ",")})"
+    }
+
+    fun escapeNumberCollection(values : Collection<*>) : String
     {
         val tokens=mutableListOf<String>()
         for (token in values)
             tokens.add(token.toString())
-        return tokens(tokens, delimitedBy = ",")
+        return "(${mergeTokens(tokens, delimitedBy = ",")})"
     }
 
-    fun boolean(value : Boolean) : Int =
+    fun escapeBoolean(value : Boolean) : Int =
         if (value) 1 else 0
 
-    fun tokens(tokens : List<String>, delimitedBy : String) : String
+    fun mergeTokens(tokens : List<String>, delimitedBy : String) : String
     {
         val stringBuilder=StringBuilder()
         val length=tokens.size

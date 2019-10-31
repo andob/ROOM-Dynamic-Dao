@@ -13,7 +13,7 @@ allprojects {
 ```
 ```
 dependencies {
-    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.0.8'
+    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.0.9'
     implementation 'com.github.yatatsu.FieldSchema:annotations:0.3.0'
     kapt 'com.github.andob.FieldSchema:processor:0.3.1'
 }
@@ -163,23 +163,23 @@ class RestaurantListQueryBuilder : QueryBuilder<RestaurantFilter>
 
     override fun tableName(): String? = FS.Restaurant
 
-    override fun where(tokens: QueryWhereTokens): String?
+    override fun where(conditions: QueryWhereConditions): String?
     {
         if (filter.search!=null)
-            tokens.addSearchTokens(filter.search, onColumns = arrayOf(FS.Restaurant_name))
+            conditions.addSearchConditions(filter.search, onColumns = arrayOf(FS.Restaurant_name))
 
         if (filter.rating!=null)
-            tokens.add("${FS.Restaurant_rating} = ${filter.rating}")
+            conditions.add("${FS.Restaurant_rating} = ${filter.rating}")
 
         if (filter.boundingBox!=null)
         {
-            tokens.add("${FS.Restaurant_latitude}  <= ${filter.boundingBox?.northWestLat}")
-            tokens.add("${FS.Restaurant_latitude}  >= ${filter.boundingBox?.southEastLat}")
-            tokens.add("${FS.Restaurant_longitude} >= ${filter.boundingBox?.northWestLng}")
-            tokens.add("${FS.Restaurant_longitude} <= ${filter.boundingBox?.southEastLng}")
+            conditions.add("${FS.Restaurant_latitude}  <= ${filter.boundingBox?.northWestLat}")
+            conditions.add("${FS.Restaurant_latitude}  >= ${filter.boundingBox?.southEastLat}")
+            conditions.add("${FS.Restaurant_longitude} >= ${filter.boundingBox?.northWestLng}")
+            conditions.add("${FS.Restaurant_longitude} <= ${filter.boundingBox?.southEastLng}")
         }
 
-        return tokens.and()
+        return conditions.mergeWithAnd()
     }
 }
 ```
@@ -217,6 +217,6 @@ Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
-limitations under the License.`
+limitations under the License.
 ```
 
