@@ -1,4 +1,6 @@
 # Room Dynamic DAO
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fandob%2FROOM-Dynamic-Dao.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fandob%2FROOM-Dynamic-Dao?ref=badge_shield)
+
 
 ### A simple query builder for Google's ROOM ORM for Android
 
@@ -220,3 +222,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fandob%2FROOM-Dynamic-Dao.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fandob%2FROOM-Dynamic-Dao?ref=badge_large)
