@@ -18,6 +18,6 @@ class QueryProjectionClauses : LinkedList<String>()
 
     fun merge() : String =
         if (isNotEmpty())
-            SQLEscape.mergeTokens(this, delimitedBy = " , ")
+            this.joinToString(separator = " , ")
         else "*"
 }

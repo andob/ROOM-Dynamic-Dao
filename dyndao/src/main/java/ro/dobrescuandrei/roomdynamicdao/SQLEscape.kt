@@ -6,7 +6,28 @@ internal object SQLEscape
 {
     fun escapeString(string : String) : String
     {
-        return DatabaseUtils.sqlEscapeString(string)
+        try
+        {
+            return DatabaseUtils.sqlEscapeString(string)
+        }
+        catch (ex : Exception)
+        {
+            val escaper=StringBuilder()
+            escaper.append('\'')
+            if (string.indexOf('\'') != -1)
+            {
+                for (character in string.toCharArray())
+                {
+                    if (character=='\'')
+                        escaper.append('\'')
+                    escaper.append(character)
+                }
+
+            }
+            else escaper.append(string)
+            escaper.append('\'')
+            return escaper.toString()
+        }
     }
 
     fun escapeStringArray(values : Array<String>) : String
@@ -14,7 +35,7 @@ internal object SQLEscape
         val tokens=mutableListOf<String>()
         for (token in values)
             tokens.add(escapeString(token))
-        return "(${mergeTokens(tokens, delimitedBy = ",")})"
+        return "(${tokens.joinToString(separator = ", ")})"
     }
 
     fun escapeStringCollection(values : Collection<String>) : String
@@ -22,7 +43,7 @@ internal object SQLEscape
         val tokens=mutableListOf<String>()
         for (token in values)
             tokens.add(escapeString(token))
-        return "(${mergeTokens(tokens, delimitedBy = ",")})"
+        return "(${tokens.joinToString(separator = ", ")})"
     }
 
     fun escapeNumberArray(values : IntArray) : String
@@ -30,7 +51,7 @@ internal object SQLEscape
         val tokens=mutableListOf<String>()
         for (token in values)
             tokens.add("$token")
-        return "(${mergeTokens(tokens, delimitedBy = ",")})"
+        return "(${tokens.joinToString(separator = ", ")})"
     }
 
     fun escapeNumberArray(values : LongArray) : String
@@ -38,7 +59,7 @@ internal object SQLEscape
         val tokens=mutableListOf<String>()
         for (token in values)
             tokens.add("$token")
-        return "(${mergeTokens(tokens, delimitedBy = ",")})"
+        return "(${tokens.joinToString(separator = ", ")})"
     }
 
     fun escapeNumberArray(values : DoubleArray) : String
@@ -46,7 +67,7 @@ internal object SQLEscape
         val tokens=mutableListOf<String>()
         for (token in values)
             tokens.add("$token")
-        return "(${mergeTokens(tokens, delimitedBy = ",")})"
+        return "(${tokens.joinToString(separator = ", ")})"
     }
 
     fun escapeNumberArray(values : FloatArray) : String
@@ -54,7 +75,7 @@ internal object SQLEscape
         val tokens=mutableListOf<String>()
         for (token in values)
             tokens.add("$token")
-        return "(${mergeTokens(tokens, delimitedBy = ",")})"
+        return "(${tokens.joinToString(separator = ", ")})"
     }
 
     fun escapeNumberCollection(values : Collection<*>) : String
@@ -62,25 +83,9 @@ internal object SQLEscape
         val tokens=mutableListOf<String>()
         for (token in values)
             tokens.add(token.toString())
-        return "(${mergeTokens(tokens, delimitedBy = ",")})"
+        return "(${tokens.joinToString(separator = ", ")})"
     }
 
     fun escapeBoolean(value : Boolean) : Int =
         if (value) 1 else 0
-
-    fun mergeTokens(tokens : List<String>, delimitedBy : String) : String
-    {
-        val stringBuilder=StringBuilder()
-        val length=tokens.size
-
-        for (i in 0 until length)
-        {
-            stringBuilder.append(tokens[i])
-
-            if (i!=length-1)
-                stringBuilder.append(" $delimitedBy ")
-        }
-
-        return stringBuilder.toString()
-    }
 }

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'kotlin-kapt'
 
 group='com.github.jitpack'
 version '1.0'
@@ -32,5 +33,9 @@ android {
 dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.room:room-runtime:2.1.0-alpha06'
-    api 'com.github.andob.ROOM-Dynamic-Dao:basefilter:v1.0.2'
+    api 'com.github.andob.ROOM-Dynamic-Dao:basefilter:v1.0.9'
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'com.github.yatatsu.FieldSchema:annotations:0.3.0'
+    kaptTest 'com.github.andob.FieldSchema:processor:0.3.1'
 }

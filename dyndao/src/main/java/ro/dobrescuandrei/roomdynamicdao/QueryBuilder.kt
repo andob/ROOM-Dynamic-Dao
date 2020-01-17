@@ -1,6 +1,5 @@
 package ro.dobrescuandrei.roomdynamicdao
 
-import android.text.TextUtils
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import ro.andreidobrescu.basefilter.BaseFilter
@@ -15,17 +14,17 @@ abstract class QueryBuilder<FILTER : BaseFilter>
         var sql = "select ${projection(QueryProjectionClauses())} from ${tableName()} "
 
         join(QueryJoinClauses())?.let { join ->
-            if (!TextUtils.isEmpty(join))
+            if (join.isNotEmpty())
                 sql+=join
         }
 
         where(QueryWhereConditions())?.let { where ->
-            if (!TextUtils.isEmpty(where))
+            if (where.isNotEmpty())
                 sql+=" where $where "
         }
 
         orderBy()?.let { order ->
-            if (!TextUtils.isEmpty(order))
+            if (order.isNotEmpty())
                 sql+=" order by $order "
         }
 
@@ -55,12 +54,18 @@ abstract class QueryBuilder<FILTER : BaseFilter>
     val Array<*>.sqlEscaped get() =
         if (firstOrNull()!=null&&first() is String)
             SQLEscape.escapeStringArray(this as Array<String>)
-        else ""
+        else if (firstOrNull()!=null&&first() is Number)
+            SQLEscape.escapeNumberCollection(toList())
+        else if (firstOrNull()!=null)
+            throw RuntimeException("Cannot escape ${first()!!::class.java.name}")
+        else throw RuntimeException("Cannot escape empty collection")
 
     val Collection<*>.sqlEscaped get() =
         if (firstOrNull()!=null&&first() is String)
             SQLEscape.escapeStringCollection(this as Collection<String>)
         else if (firstOrNull()!=null&&first() is Number)
             SQLEscape.escapeNumberCollection(this)
-        else ""
+        else if (firstOrNull()!=null)
+            throw RuntimeException("Cannot escape ${first()!!::class.java.name}")
+        else throw RuntimeException("Cannot escape empty collection")
 }

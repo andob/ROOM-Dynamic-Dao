@@ -115,6 +115,13 @@ Or booleans:
 
 Result: ``isActive = 1``
 
+Note: before escaping string / number arrays / lists, you must check if the array is not empty, otherwise an exception will be throwed.
+
+```
+arrayOf("some", "strings").sqlEscaped //OK -> ('some', 'strings')
+arrayOf<String>().sqlEscaped //RuntimeException
+```
+
 ### How to join other tables <a name="join"></a>
 
 Consider we add 

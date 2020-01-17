@@ -17,6 +17,6 @@ class QueryJoinClauses : LinkedList<String>()
 
     fun merge() =
         if (isNotEmpty())
-            SQLEscape.mergeTokens(this, delimitedBy = " ")
+            this.joinToString(separator = " ")
         else null
 }

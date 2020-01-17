@@ -1,13 +1,12 @@
 package ro.dobrescuandrei.roomdynamicdao
 
-import android.text.TextUtils
 import java.util.*
 
 class QueryWhereConditions : LinkedList<String>()
 {
     fun addSearchConditions(search : String?, onColumns : Array<String>)
     {
-        if (search!=null&&!TextUtils.isEmpty(search))
+        if (search!=null&&search.isNotEmpty())
         {
             val likeArgument="'%${
                 SQLEscape.escapeString(search)
@@ -29,11 +28,11 @@ class QueryWhereConditions : LinkedList<String>()
 
     fun mergeWithAnd() =
         if (!isEmpty())
-            SQLEscape.mergeTokens(this, delimitedBy = " and ")
+            this.joinToString(separator = " and ")
         else " 1==1 "
 
     fun mergeWithOr() =
         if (!isEmpty())
-            SQLEscape.mergeTokens(this, delimitedBy = " or ")
+            this.joinToString(separator = " or ")
         else " 1==1 "
 }
