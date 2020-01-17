@@ -33,7 +33,7 @@ android {
 dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.room:room-runtime:2.1.0-alpha06'
-    api 'com.github.andob.ROOM-Dynamic-Dao:basefilter:v1.0.9'
+    api 'com.github.andob.ROOM-Dynamic-Dao:basefilter:v1.1.0'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.github.yatatsu.FieldSchema:annotations:0.3.0'
