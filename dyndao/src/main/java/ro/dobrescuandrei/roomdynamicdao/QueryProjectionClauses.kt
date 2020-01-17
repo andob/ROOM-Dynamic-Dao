@@ -16,8 +16,10 @@ class QueryProjectionClauses : LinkedList<String>()
         return this
     }
 
-    fun merge() : String =
+    fun merge() : String
+    {
         if (isNotEmpty())
-            this.joinToString(separator = " , ")
-        else "*"
+            return this.joinToString(separator = " , ")
+        return "*"
+    }
 }

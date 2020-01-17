@@ -13,6 +13,7 @@ class RestaurantJoinListQueryBuilderTests
     fun testJoinsAndProjections()
     {
         val filter=RestaurantFilter()
+        filter.offset=1
 
         val queryBuilder=RestaurantJoinListQueryBuilder(filter)
         val resultQuery=queryBuilder.build().sql!!.removeUnnecessarySpaces()
@@ -25,7 +26,7 @@ class RestaurantJoinListQueryBuilderTests
                 "where 1=1 "+
                 "order by ${FS.Restaurant_id} asc "+
                 (if (QueryBuilderDefaults.enablePagination)
-                    "limit ${BaseFilterDefaults.limit} offset 0"
+                    "limit ${BaseFilterDefaults.limit} offset ${filter.offset}"
                 else "")
 
         assertEquals(resultQuery, expectedQuery.trim())

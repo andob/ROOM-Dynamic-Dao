@@ -106,4 +106,15 @@ class QueryWhereConditionsTests
 
         assertEquals(resultQuery, expectedQuery)
     }
+
+    @Test
+    fun testEmptyWhereCondition()
+    {
+        val conditions=QueryWhereConditions()
+
+        val resultQuery="select * from ${FS.Restaurant} where ${conditions.mergeWithAnd()}".removeUnnecessarySpaces()
+        val expectedQuery="select * from ${FS.Restaurant} where 1==1"
+
+        assertEquals(resultQuery, expectedQuery)
+    }
 }

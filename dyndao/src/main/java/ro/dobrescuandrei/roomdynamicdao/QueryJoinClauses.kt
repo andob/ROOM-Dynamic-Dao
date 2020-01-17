@@ -15,8 +15,10 @@ class QueryJoinClauses : LinkedList<String>()
         add(" $type join $remoteTable on $table.$column = $remoteTable.$remoteColumn")
     }
 
-    fun merge() =
+    fun merge() : String?
+    {
         if (isNotEmpty())
-            this.joinToString(separator = " ")
-        else null
+            return this.joinToString(separator = " ")
+        return null
+    }
 }

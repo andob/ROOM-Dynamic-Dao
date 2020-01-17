@@ -9,16 +9,13 @@ import ro.dobrescuandrei.roomdynamicdao.model.Restaurant
 
 class SQLEscapeTests
 {
-    inline fun runOnQueryBuilder(toRun : QueryBuilder<BaseFilter>.() -> (Unit))
+    val dummyQueryBuilder=object : QueryBuilder<BaseFilter>(object : BaseFilter() {})
     {
-        val queryBuilder=object : QueryBuilder<BaseFilter>(object : BaseFilter() {})
-        {
-            override fun tableName() = ""
-            override fun where(conditions : QueryWhereConditions) = "1=1"
-        }
-
-        toRun(queryBuilder)
+        override fun tableName() = ""
+        override fun where(conditions : QueryWhereConditions) = "1=1"
     }
+
+    inline fun runOnQueryBuilder(toRun : QueryBuilder<BaseFilter>.() -> (Unit)) = toRun(dummyQueryBuilder)
 
     @Test
     fun testStringEscape()

@@ -38,7 +38,7 @@ abstract class QueryBuilder<FILTER : BaseFilter>
     }
 
     abstract fun tableName() : String?
-    open fun projection(clauses : QueryProjectionClauses) = "*"
+    open fun projection(clauses : QueryProjectionClauses) : String = "*"
     open fun join(clauses : QueryJoinClauses) : String? = null
     abstract fun where(conditions : QueryWhereConditions) : String?
     open fun orderBy() : String? = null

@@ -30,7 +30,8 @@ class RestaurantListQueryBuilderTests
 
         val queryBuilder=RestaurantListQueryBuilder(filter)
         val resultQuery=queryBuilder.build().sql!!.removeUnnecessarySpaces()
-        val expectedQuery="select * from ${FS.Restaurant} where rating = 4"
+        val expectedQuery="select * from ${FS.Restaurant} "+
+                "where ${FS.Restaurant_rating} = ${filter.rating}"
 
         assertEquals(resultQuery, expectedQuery)
     }
@@ -44,8 +45,8 @@ class RestaurantListQueryBuilderTests
         val queryBuilder=RestaurantListQueryBuilder(filter)
         val resultQuery=queryBuilder.build().sql!!.removeUnnecessarySpaces()
         val expectedQuery="select * from ${FS.Restaurant} "+
-                "where ${FS.Restaurant_latitude} <= 1.0 and ${FS.Restaurant_latitude} >= 3.0 "+
-                "and ${FS.Restaurant_longitude} >= 2.0 and ${FS.Restaurant_longitude} <= 4.0"
+                "where ${FS.Restaurant_latitude} <= ${filter.boundingBox!!.northWestLat} and ${FS.Restaurant_latitude} >= ${filter.boundingBox!!.southEastLat} "+
+                "and ${FS.Restaurant_longitude} >= ${filter.boundingBox!!.northWestLng} and ${FS.Restaurant_longitude} <= ${filter.boundingBox!!.southEastLng}"
 
         assertEquals(resultQuery, expectedQuery)
     }
@@ -60,9 +61,9 @@ class RestaurantListQueryBuilderTests
         val queryBuilder=RestaurantListQueryBuilder(filter)
         val resultQuery=queryBuilder.build().sql!!.removeUnnecessarySpaces()
         val expectedQuery="select * from ${FS.Restaurant} "+
-                "where ${FS.Restaurant_rating} = 4 "+
-                "and ${FS.Restaurant_latitude} <= 1.0 and ${FS.Restaurant_latitude} >= 3.0 "+
-                "and ${FS.Restaurant_longitude} >= 2.0 and ${FS.Restaurant_longitude} <= 4.0"
+                "where ${FS.Restaurant_rating} = ${filter.rating} "+
+                "and ${FS.Restaurant_latitude} <= ${filter.boundingBox!!.northWestLat} and ${FS.Restaurant_latitude} >= ${filter.boundingBox!!.southEastLat} "+
+                "and ${FS.Restaurant_longitude} >= ${filter.boundingBox!!.northWestLng} and ${FS.Restaurant_longitude} <= ${filter.boundingBox!!.southEastLng}"
 
         assertEquals(resultQuery, expectedQuery)
     }

@@ -88,11 +88,23 @@ class QueryJoinAndProjectionClausesTests
 
         val resultQuery="select ${projectionClauses.merge()} from ${FS.Restaurant} ${joinClauses.merge()!!}".removeUnnecessarySpaces()
         val expectedQuery="select ${FS.Restaurant}.*, "+
-                "${FS.City}.${FS.City_name} as ${FS.RestaurantJoin_cityName}, "+
-                "${FS.Country}.${FS.Country_name} as ${FS.RestaurantJoin_countryName} "+
+                    "${FS.City}.${FS.City_name} as ${FS.RestaurantJoin_cityName}, "+
+                    "${FS.Country}.${FS.Country_name} as ${FS.RestaurantJoin_countryName} "+
                 "from ${FS.Restaurant} "+
                 "full outer join ${FS.City} on ${FS.Restaurant}.${FS.Restaurant_cityId} = ${FS.City}.${FS.City_id} "+
                 "full outer join ${FS.Country} on ${FS.City}.${FS.City_countryId} = ${FS.Country}.${FS.Country_id}"
+
+        assertEquals(resultQuery, expectedQuery)
+    }
+
+    @Test
+    fun testEmptyProjectionAndJoinClauses()
+    {
+        val joinClauses=QueryJoinClauses()
+        val projectionClauses=QueryProjectionClauses()
+
+        val resultQuery="select ${projectionClauses.merge()} from ${FS.Restaurant} ${joinClauses.merge()?:""}".removeUnnecessarySpaces()
+        val expectedQuery="select * from ${FS.Restaurant}"
 
         assertEquals(resultQuery, expectedQuery)
     }
