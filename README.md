@@ -13,7 +13,7 @@ allprojects {
 ```
 ```
 dependencies {
-    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.1.0'
+    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.1.1'
     implementation 'com.github.yatatsu.FieldSchema:annotations:0.3.0'
     kapt 'com.github.andob.FieldSchema:processor:0.3.1'
 }
@@ -191,6 +191,15 @@ interface RestaurantDao
     @RawQuery
     fun getList(query : SupportSQLiteQuery) : List<Restaurant>
 }
+```
+
+```
+-- result:
+select * from Restaurant where 1=1
+select * from Restaurant where name like '%something%'
+select * from Restaurant where rating = 5
+select * from Restaurant where name like '%something%' and rating = 5
+-- and so on, depending on the use case
 ```
 
 ```kotlin

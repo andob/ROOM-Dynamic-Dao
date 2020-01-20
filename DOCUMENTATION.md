@@ -330,6 +330,13 @@ fun RestaurantFilter.toSQLiteQuery() : SupportSQLiteQuery
         }
     ).build()
 }
+```
+
+```
+val filters=listOf<RestaurantFilter>()
+filters.map { filter -> filter.toSQLiteQuery() }
+    .flatMap { query ->  DB.restaurantDao().getAll(query) }
+    .forEach { restaurant -> println(restaurant) }
 ``` 
 
 ### How to change default settings <a name="defaults"></a>

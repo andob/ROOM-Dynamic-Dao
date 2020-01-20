@@ -20,8 +20,7 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
         return conditions.mergeWithAnd()
     }
 
-    //enable pagination. By default, pagination is disabled
-    override fun enablePagination() = true
+    override fun isPaginationEnabled() = true
 
     //column projections
     override fun projection(clauses : QueryProjectionClauses): String
