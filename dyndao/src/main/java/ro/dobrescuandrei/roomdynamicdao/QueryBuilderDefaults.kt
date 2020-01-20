@@ -2,5 +2,5 @@ package ro.dobrescuandrei.roomdynamicdao
 
 object QueryBuilderDefaults
 {
-    var enablePagination : Boolean = false
+    var isPaginationEnabled : Boolean = false
 }

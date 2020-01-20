@@ -28,7 +28,7 @@ abstract class QueryBuilder<FILTER : BaseFilter>
                 sql+=" order by $order "
         }
 
-        if (enablePagination())
+        if (isPaginationEnabled())
         {
             sql+=" limit ${filter.limit} "
             sql+=" offset ${filter.offset} "
@@ -42,7 +42,7 @@ abstract class QueryBuilder<FILTER : BaseFilter>
     open fun join(clauses : QueryJoinClauses) : String? = null
     abstract fun where(conditions : QueryWhereConditions) : String?
     open fun orderBy() : String? = null
-    open fun enablePagination() : Boolean = QueryBuilderDefaults.enablePagination
+    open fun isPaginationEnabled() : Boolean = QueryBuilderDefaults.isPaginationEnabled
 
     val String.sqlEscaped get() = SQLEscape.escapeString(this)
     val IntArray.sqlEscaped get() = SQLEscape.escapeNumberArray(this)

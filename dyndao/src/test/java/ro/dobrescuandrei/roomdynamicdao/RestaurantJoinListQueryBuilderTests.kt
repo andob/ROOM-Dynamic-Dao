@@ -25,7 +25,7 @@ class RestaurantJoinListQueryBuilderTests
                 "inner join ${FS.Country} on ${FS.City}.${FS.City_countryId} = ${FS.Country}.${FS.Country_id} "+
                 "where 1=1 "+
                 "order by ${FS.Restaurant_id} asc "+
-                (if (QueryBuilderDefaults.enablePagination)
+                (if (QueryBuilderDefaults.isPaginationEnabled)
                     "limit ${BaseFilterDefaults.limit} offset ${filter.offset}"
                 else "")
 
@@ -43,8 +43,8 @@ class RestaurantJoinListQueryBuilderTests
     @Test
     fun testJoinsAndProjectionsWithModifiedDefaultPaginationBehavior()
     {
-        QueryBuilderDefaults.enablePagination=true
+        QueryBuilderDefaults.isPaginationEnabled=true
         testJoinsAndProjections()
-        QueryBuilderDefaults.enablePagination=false
+        QueryBuilderDefaults.isPaginationEnabled=false
     }
 }

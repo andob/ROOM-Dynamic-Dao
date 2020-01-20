@@ -8,7 +8,8 @@
 2. [How to build where conditions](#where)
 3. [How to join other tables](#join)
 4. [How to project columns from tables](#project)
-5. [How to change default settings](#defaults)
+5. [OOP vs FP QueryBuilder styles](#oopfp)
+6. [How to change default settings](#defaults)
 
 ### QueryBuilder methods overview <a name="overview"></a>
 
@@ -25,7 +26,7 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
 
     //enable pagination. By default, pagination is DISABLED
     //to change this default behavior, see How to change default settings section
-    override fun enablePagination() : Boolean = true
+    override fun isPaginationEnabled() : Boolean = true
 
     //column projections
     override fun projection(clauses : QueryProjectionClauses): String = "*"
@@ -244,6 +245,93 @@ select Restaurant.*,
        Country.name as countryName
 ```
 
+### OOP vs FP QueryBuilder styles <a name="oopfp"></a>
+
+So far, your QueryBuilder looks something like this:
+
+```kotlin
+class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
+{
+    constructor(filter: RestaurantFilter) : super(filter)
+
+    override fun tableName() : String? = FS.Restaurant
+
+    override fun where(conditions: QueryWhereConditions) : String?
+    {
+        conditions.addSearchConditions(search, onColumns = arrayOf(FS.Restaurant_name, FS.Restaurant_description))
+        return conditions.mergeWithAnd()
+    }
+
+    override fun projection(clauses : QueryProjectionClauses): String
+    {
+        clauses.addAllFieldsFromTable(FS.Restaurant)
+    
+        clauses.addField(FS.City_name,
+            fromTable = FS.City,
+            projectAs = FS.RestaurantJoin_cityName)
+    
+        return clauses.merge()
+    }
+
+    override fun join(clauses : QueryJoinClauses) : String?
+    {
+        clauses.addInnerJoin(
+            table = FS.City,
+            column = FS.City_countryId,
+            remoteTable = FS.Country,
+            remoteColumn = FS.Country_id)
+    
+        return clauses.merge()
+    }
+
+    override fun orderBy() : String? = "${FS.Restaurant_id} asc"
+}
+```
+
+If you need a more functional style, you can write the same query builder with the ``newQueryBuilder`` top level function:
+
+```kotlin
+fun RestaurantFilter.toSQLiteQuery() : SupportSQLiteQuery
+{
+    val filter=this
+
+    return newQueryBuilder<RestaurantFilter>(
+        tableName = FS.Restaurant,
+        join = join@ { clauses ->
+            clauses.addInnerJoin(
+                table = FS.Restaurant,
+                column = FS.Restaurant_cityId,
+                remoteTable = FS.City,
+                remoteColumn = FS.City_id)
+
+            return@join clauses.merge()
+        },
+        projection = projection@ { clauses ->
+            clauses.addAllFieldsFromTable(FS.Restaurant)
+
+            clauses.addField(
+                FS.City_name,
+                fromTable = FS.City,
+                projectAs = FS.RestaurantJoin_cityName)
+
+            return@projection clauses.merge()
+        },
+        where = where@ { conditions ->
+            if (filter.search!=null)
+                conditions.addSearchConditions(filter.search, onColumns = arrayOf(FS.Restaurant_name))
+
+            if (filter.rating!=null)
+                conditions.add("${FS.Restaurant_rating} = ${filter.rating}")
+
+            return@where conditions.mergeWithAnd()
+        },
+        orderBy = {
+            "${FS.Restaurant_id} asc"
+        }
+    ).build()
+}
+``` 
+
 ### How to change default settings <a name="defaults"></a>
 
 ```kotlin
@@ -254,7 +342,7 @@ class App : Application()
         super.onCreate()
 
         BaseFilterDefaults.limit=10000
-        QueryBuilderDefaults.enablePagination=true
+        QueryBuilderDefaults.isPaginationEnabled=true
     }
 }
 ```
