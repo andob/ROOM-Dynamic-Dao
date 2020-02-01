@@ -290,14 +290,11 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
 }
 ```
 
-If you need a more functional style, you can write the same query builder with the ``newQueryBuilder`` top level function:
+If you need a more functional style, you can write the same query builder with the ``BaseFilter.toQueryBuilder`` extension function:
 
 ```kotlin
-fun RestaurantFilter.toSQLiteQuery() : SupportSQLiteQuery
-{
-    val filter=this
-
-    return newQueryBuilder<RestaurantFilter>(
+fun RestaurantFilter.toSQLiteQuery() : SupportSQLiteQuery =
+    this.toQueryBuilder(
         tableName = FS.Restaurant,
         join = join@ { clauses ->
             clauses.addInnerJoin(
@@ -329,9 +326,7 @@ fun RestaurantFilter.toSQLiteQuery() : SupportSQLiteQuery
         },
         orderBy = {
             "${FS.Restaurant_id} asc"
-        }
-    ).build()
-}
+        }).build()
 ```
 
 ```kotlin
@@ -391,5 +386,5 @@ val sql2="select * from ${TS.City} where ${TS.City_countryId} = 3 or ${TS.City_i
 1. For each domain model, create a filter model, a DAO interface and a QueryBuilder class (ex: ``Restaurant``, ``RestaurantFilter``, ``RestaurantDao``, ``RestaurantListQueryBuilder``, ``Cat``, ``CatFilter``, ``CatDao``, ``CatListQueryBuilder`` and so on).
 2. Use QueryBuilder classes only to transform the filter into a select query returning a list of entities (ex: ``ResturantFilter`` is transformed into a query via ``RestaurantListQueryBuilder``, executed with ``RestaurantDao`` which gives us a ``List<Restaurant>``)
 3. All other queries, such as inserts, updates, deletions, selection of a single object or complex report-style select queries must be written as DAO methods with ``@Query``, ``@Update``, ``@Insert``, ``@Delete`` annotations (in ROOM's standard way).
-4. Don't forget to escape strings!!! And arrays, lists, booleans.
+4. In order to prevent SQL injection, don't forget to escape string values!!!
 5. Always use ``TS.*`` constants if you are using custom names for tables or columns. If your table names are identical to model classes names and column names are identical to model class's field names, use ``FS.*``.

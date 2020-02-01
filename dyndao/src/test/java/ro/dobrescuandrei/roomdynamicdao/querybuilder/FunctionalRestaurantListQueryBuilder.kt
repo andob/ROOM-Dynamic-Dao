@@ -3,13 +3,10 @@ package ro.dobrescuandrei.roomdynamicdao.querybuilder
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.yatatsu.fieldschema.FS
 import ro.dobrescuandrei.roomdynamicdao.model.RestaurantFilter
-import ro.dobrescuandrei.roomdynamicdao.newQueryBuilder
+import ro.dobrescuandrei.roomdynamicdao.toQueryBuilder
 
-fun RestaurantFilter.toSQLiteQuery() : SupportSQLiteQuery
-{
-    val filter=this
-
-    return newQueryBuilder<RestaurantFilter>(
+fun RestaurantFilter.toSQLiteQuery() : SupportSQLiteQuery =
+    this.toQueryBuilder(
         tableName = FS.Restaurant,
         join = join@ { clauses ->
             clauses.addInnerJoin(
@@ -41,6 +38,4 @@ fun RestaurantFilter.toSQLiteQuery() : SupportSQLiteQuery
         },
         orderBy = {
             "${FS.Restaurant_id} asc"
-        }
-    ).build()
-}
+        }).build()
