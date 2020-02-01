@@ -10,6 +10,7 @@
 4. [How to project columns from tables](#project)
 5. [OOP vs FP QueryBuilder styles](#oopfp)
 6. [How to change default settings](#defaults)
+7. [Custom table / column names and FieldSchema](#fsvsts)
 
 ### QueryBuilder methods overview <a name="overview"></a>
 
@@ -332,7 +333,7 @@ fun RestaurantFilter.toSQLiteQuery() : SupportSQLiteQuery
 }
 ```
 
-```
+```kotlin
 val filters=listOf<RestaurantFilter>()
 filters.map { filter -> filter.toSQLiteQuery() }
     .flatMap { query ->  DB.restaurantDao().getAll(query) }
@@ -352,4 +353,34 @@ class App : Application()
         QueryBuilderDefaults.isPaginationEnabled=true
     }
 }
+```
+
+### Custom table / column names and FieldSchema <a name="fsvsts"></a>
+
+The [FieldSchema](https://github.com/andob/FieldSchema) annotation processor library generates constants for classes annotated with ``@FieldSchemaClass``. This library will generate two classes: FS, containing the schema based on class and class fields names, and TS, containing the database schema (table names and table column names).
+
+**If you are using custom table or column names (if table names differ from class names or column names differ from field names), please use TS.\* instead of FS.\***; for instance:
+
+```kotlin
+@Entity(tableName = "CitiesTable")
+@FieldSchemaClass
+class City
+{
+    @PrimaryKey
+    @ColumnInfo
+    val id : Int = 0
+
+    @ColumnInfo
+    val name : String = ""
+
+    @ColumnInfo(name = "country_id")
+    val countryId : Int = 0
+}
+```
+
+```kotlin
+val sql1="select * from ${FS.City} where ${FS.City_countryId} = 3 or ${FS,City_id} = 4"
+//result: select * from City where countryId = 3 or id = 4 <-- incorrect sql
+val sql2="select * from ${TS.City} where ${TS.City_countryId} = 3 or ${TS,City_id} = 4"
+//result: select * from CitiesTable where country_id = 3 or id = 4 <-- correct sql
 ```
