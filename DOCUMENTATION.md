@@ -11,6 +11,7 @@
 5. [OOP vs FP QueryBuilder styles](#oopfp)
 6. [How to change default settings](#defaults)
 7. [Custom table / column names and FieldSchema](#fsvsts)
+8. [Best practices](#bestpractices)
 
 ### QueryBuilder methods overview <a name="overview"></a>
 
@@ -175,7 +176,7 @@ class RestaurantJoin : Restaurant()
 }
 ```
 
-Join tables:
+Then, in your QueryBuilder class:
 
 ```kotlin
 override fun join(clauses : QueryJoinClauses) : String?
@@ -357,9 +358,9 @@ class App : Application()
 
 ### Custom table / column names and FieldSchema <a name="fsvsts"></a>
 
-The [FieldSchema](https://github.com/andob/FieldSchema) annotation processor library generates constants for classes annotated with ``@FieldSchemaClass``. This library will generate two classes: FS, containing the schema based on class and class fields names, and TS, containing the database schema (table names and table column names).
+The [FieldSchema](https://github.com/andob/FieldSchema) annotation processor library generates constants for classes annotated with ``@FieldSchemaClass``. This library will generate two classes: ``FS``, containing the schema based on class and class fields names, and ``TS``, containing the database schema (table names and table column names).
 
-**If you are using custom table or column names (if table names differ from class names or column names differ from field names), please use TS.\* instead of FS.\***; for instance:
+**If you are using custom table or column names (if table names differ from class names or column names differ from field names), please use ``TS.*`` instead of ``FS.*``**; for instance:
 
 ```kotlin
 @Entity(tableName = "CitiesTable")
@@ -384,3 +385,11 @@ val sql1="select * from ${FS.City} where ${FS.City_countryId} = 3 or ${FS.City_i
 val sql2="select * from ${TS.City} where ${TS.City_countryId} = 3 or ${TS.City_id} = 4"
 //result: select * from CitiesTable where country_id = 3 or id = 4 <-- correct sql
 ```
+
+### Best practices <a name="bestpractices"></a>
+
+1. For each domain model, create a filter model, a DAO interface and a QueryBuilder class (ex: ``Restaurant``, ``RestaurantFilter``, ``RestaurantDao``, ``RestaurantListQueryBuilder``, ``Cat``, ``CatFilter``, ``CatDao``, ``CatListQueryBuilder`` and so on).
+2. Use QueryBuilder classes only to transform the filter into a select query returning a list of entities (ex: ``ResturantFilter`` is transformed into a query via ``RestaurantListQueryBuilder``, executed with ``RestaurantDao`` which gives us a ``List<Restaurant>``)
+3. All other queries, such as inserts, updates, deletions, selection of a single object or complex report-style select queries must be written as DAO methods with ``@Query``, ``@Update``, ``@Insert``, ``@Delete`` annotations (in ROOM's standard way).
+4. Don't forget to escape strings!!! And arrays, lists, booleans.
+5. Always use ``TS.*`` constants if you are using custom names for tables or columns. If your table names are identical to model classes names and column names are identical to model class's field names, use ``FS.*``.
