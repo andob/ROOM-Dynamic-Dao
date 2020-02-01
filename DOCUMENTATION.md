@@ -379,8 +379,8 @@ class City
 ```
 
 ```kotlin
-val sql1="select * from ${FS.City} where ${FS.City_countryId} = 3 or ${FS,City_id} = 4"
+val sql1="select * from ${FS.City} where ${FS.City_countryId} = 3 or ${FS.City_id} = 4"
 //result: select * from City where countryId = 3 or id = 4 <-- incorrect sql
-val sql2="select * from ${TS.City} where ${TS.City_countryId} = 3 or ${TS,City_id} = 4"
+val sql2="select * from ${TS.City} where ${TS.City_countryId} = 3 or ${TS.City_id} = 4"
 //result: select * from CitiesTable where country_id = 3 or id = 4 <-- correct sql
 ```
