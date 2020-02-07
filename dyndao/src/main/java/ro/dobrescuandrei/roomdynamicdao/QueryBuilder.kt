@@ -1,7 +1,6 @@
 package ro.dobrescuandrei.roomdynamicdao
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import androidx.sqlite.db.SupportSQLiteQuery
 import ro.andreidobrescu.basefilter.BaseFilter
 
 abstract class QueryBuilder<FILTER : BaseFilter>
@@ -9,9 +8,10 @@ abstract class QueryBuilder<FILTER : BaseFilter>
     val filter : FILTER
 )
 {
-    fun build() : SupportSQLiteQuery
+    open fun buildSqlString() : String
     {
-        var sql = "select ${projection(QueryProjectionClauses())} from ${tableName()} "
+        var sql="select ${projection(QueryProjectionClauses())}"
+        sql+=" from ${tableName()} "
 
         join(QueryJoinClauses())?.let { join ->
             if (join.isNotEmpty())
@@ -34,8 +34,10 @@ abstract class QueryBuilder<FILTER : BaseFilter>
             sql+=" offset ${filter.offset} "
         }
 
-        return SimpleSQLiteQuery(sql)
+        return sql
     }
+
+    open fun build() = SimpleSQLiteQuery(buildSqlString())
 
     abstract fun tableName() : String?
     open fun projection(clauses : QueryProjectionClauses) : String = "*"
