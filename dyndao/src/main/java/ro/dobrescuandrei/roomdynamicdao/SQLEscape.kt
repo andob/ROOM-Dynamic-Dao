@@ -2,8 +2,9 @@ package ro.dobrescuandrei.roomdynamicdao
 
 import android.database.DatabaseUtils
 
-internal object SQLEscape
+object SQLEscape
 {
+    @JvmStatic
     fun escapeString(string : String) : String
     {
         try
@@ -30,6 +31,7 @@ internal object SQLEscape
         }
     }
 
+    @JvmStatic
     fun escapeStringArray(values : Array<String>) : String
     {
         val tokens=mutableListOf<String>()
@@ -38,6 +40,7 @@ internal object SQLEscape
         return "(${tokens.joinToString(separator = ", ")})"
     }
 
+    @JvmStatic
     fun escapeStringCollection(values : Collection<String>) : String
     {
         val tokens=mutableListOf<String>()
@@ -46,6 +49,7 @@ internal object SQLEscape
         return "(${tokens.joinToString(separator = ", ")})"
     }
 
+    @JvmStatic
     fun escapeNumberArray(values : IntArray) : String
     {
         val tokens=mutableListOf<String>()
@@ -54,6 +58,7 @@ internal object SQLEscape
         return "(${tokens.joinToString(separator = ", ")})"
     }
 
+    @JvmStatic
     fun escapeNumberArray(values : LongArray) : String
     {
         val tokens=mutableListOf<String>()
@@ -62,6 +67,7 @@ internal object SQLEscape
         return "(${tokens.joinToString(separator = ", ")})"
     }
 
+    @JvmStatic
     fun escapeNumberArray(values : DoubleArray) : String
     {
         val tokens=mutableListOf<String>()
@@ -70,6 +76,7 @@ internal object SQLEscape
         return "(${tokens.joinToString(separator = ", ")})"
     }
 
+    @JvmStatic
     fun escapeNumberArray(values : FloatArray) : String
     {
         val tokens=mutableListOf<String>()
@@ -78,6 +85,7 @@ internal object SQLEscape
         return "(${tokens.joinToString(separator = ", ")})"
     }
 
+    @JvmStatic
     fun escapeNumberCollection(values : Collection<*>) : String
     {
         val tokens=mutableListOf<String>()
@@ -86,6 +94,7 @@ internal object SQLEscape
         return "(${tokens.joinToString(separator = ", ")})"
     }
 
+    @JvmStatic
     fun escapeBoolean(value : Boolean) : Int =
         if (value) 1 else 0
 }
