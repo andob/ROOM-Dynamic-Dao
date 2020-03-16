@@ -129,7 +129,7 @@ Very ugly and verbose! You cannot use if statements in DAOs. You cannot use comp
 
 ### Meet Dynamic Dao QueryBuilder
 
-Annotate your model with ``FieldSchemaClass``. The annotation processor will generate a class called ``FS`` (FieldSchema) will constants containing class field names and class names and another class called ``TS`` (TableSchema) with table names and table column names.
+Annotate your model with ``FieldSchemaClass``. The annotation processor will generate a class called ``FS`` (FieldSchema) with constants containing class field names and class names and another class called ``TS`` (TableSchema) with table names and table column names.
 
 ```kotlin
 @Entity
