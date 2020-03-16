@@ -13,7 +13,7 @@ allprojects {
 ```
 ```
 dependencies {
-    implementation ('com.github.andob:ROOM-Dynamic-Dao:v1.1.4') {
+    implementation ('com.github.andob:ROOM-Dynamic-Dao:v1.1.5') {
         exclude group: 'androidx.room'
     }
     
