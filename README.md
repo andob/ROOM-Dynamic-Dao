@@ -165,22 +165,22 @@ class RestaurantListQueryBuilder : QueryBuilder<RestaurantFilter>
 {
     constructor(filter: RestaurantFilter) : super(filter)
 
-    override fun tableName(): String? = FS.Restaurant
+    override fun tableName(): String? = TS.Restaurant
 
     override fun where(conditions: QueryWhereConditions): String?
     {
         if (filter.search!=null)
-            conditions.addSearchConditions(filter.search, onColumns = arrayOf(FS.Restaurant_name))
+            conditions.addSearchConditions(filter.search, onColumns = arrayOf(TS.Restaurant_name))
 
         if (filter.rating!=null)
-            conditions.add("${FS.Restaurant_rating} = ${filter.rating}")
+            conditions.add("${TS.Restaurant_rating} = ${filter.rating}")
 
         if (filter.boundingBox!=null)
         {
-            conditions.add("${FS.Restaurant_latitude}  <= ${filter.boundingBox?.northWestLat}")
-            conditions.add("${FS.Restaurant_latitude}  >= ${filter.boundingBox?.southEastLat}")
-            conditions.add("${FS.Restaurant_longitude} >= ${filter.boundingBox?.northWestLng}")
-            conditions.add("${FS.Restaurant_longitude} <= ${filter.boundingBox?.southEastLng}")
+            conditions.add("${TS.Restaurant_latitude}  <= ${filter.boundingBox?.northWestLat}")
+            conditions.add("${TS.Restaurant_latitude}  >= ${filter.boundingBox?.southEastLat}")
+            conditions.add("${TS.Restaurant_longitude} >= ${filter.boundingBox?.northWestLng}")
+            conditions.add("${TS.Restaurant_longitude} <= ${filter.boundingBox?.southEastLng}")
         }
 
         return conditions.mergeWithAnd()

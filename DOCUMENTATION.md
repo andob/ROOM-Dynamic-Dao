@@ -21,7 +21,7 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
     constructor(filter: RestaurantFilter) : super(filter)
 
     //used to specify table name
-    override fun tableName() : String? = FS.Restaurant
+    override fun tableName() : String? = TS.Restaurant
 
     //used to specify where conditions
     override fun where(conditions : QueryWhereConditions): String? = "1=1"
@@ -37,7 +37,7 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
     override fun join(clauses : QueryJoinClauses): String? = null
 
     //specify order by
-    override fun orderBy(): String? = "${FS.Restaurant_id} asc"
+    override fun orderBy(): String? = "${TS.Restaurant_id} asc"
 }
 ```
 
@@ -48,7 +48,7 @@ Use ``addSearchConditions`` for search conditions:
 ```kotlin
 override fun where(conditions: QueryWhereConditions) : String?
 {
-    conditions.addSearchConditions(search, onColumns = arrayOf(FS.Restaurant_name, FS.Restaurant_description))
+    conditions.addSearchConditions(search, onColumns = arrayOf(TS.Restaurant_name, TS.Restaurant_description))
     return conditions.mergeWithAnd()
 }
 ```
@@ -60,9 +60,9 @@ Use ``mergeWithAnd`` to generate a where condition set delimited by and:
 ```kotlin
 override fun where(conditions: QueryWhereConditions) : String?
 {
-    conditions.addSearchConditions(search, onColumns = arrayOf(FS.Restaurant_name, FS.Restaurant_description))
-    conditions.add("${FS.Restaurant_id} = 1")
-    conditions.add("${FS.Restaurant_rating} = 5")
+    conditions.addSearchConditions(search, onColumns = arrayOf(TS.Restaurant_name, TS.Restaurant_description))
+    conditions.add("${TS.Restaurant_id} = 1")
+    conditions.add("${TS.Restaurant_rating} = 5")
     return conditions.mergeWithAnd()
 }
 ```
@@ -79,13 +79,13 @@ You can also create complex conditions with paranthesis:
 override fun where(conditions : QueryWhereConditions) : String?
 {
     val firstConditionSet=QueryWhereConditions()
-    firstConditionSet.add("${FS.Restaurant_id} = 1")
-    firstConditionSet.add("${FS.Restaurant_rating} = 5")
+    firstConditionSet.add("${TS.Restaurant_id} = 1")
+    firstConditionSet.add("${TS.Restaurant_rating} = 5")
     conditions.add("(${firstConditionSet.mergeWithAnd()})")
 
     val secondConditionSet=QueryWhereConditions()
-    secondConditionSet.add("${FS.Restaurant_id} = 2")
-    secondConditionSet.add("${FS.Restaurant_rating} = 3")
+    secondConditionSet.add("${TS.Restaurant_id} = 2")
+    secondConditionSet.add("${TS.Restaurant_rating} = 3")
     conditions.add("(${secondConditionSet.mergeWithAnd()})")
     
     return conditions.mergeWithOr()
@@ -96,25 +96,25 @@ Result: ``where (id = 1 and rating = 5) or (id = 2 and rating = 3)``
 
 ### Don't forget to ESCAPE STRINGS:
 
-``conditions.add("${FS.Restaurant_name} = ${"asdf".sqlEscaped}")``
+``conditions.add("${TS.Restaurant_name} = ${"asdf".sqlEscaped}")``
 
 Result: ``name = 'asdf'``
 
 Or string arrays or collections:
 
-``conditions.add("${FS.Restaurant_name} in ${arrayOf("asdf", "qwerty").sqlEscaped}")``
+``conditions.add("${TS.Restaurant_name} in ${arrayOf("asdf", "qwerty").sqlEscaped}")``
 
 Result: ``name in ('asdf','qwerty')``
 
 Or number arrays or collections:
 
-``conditions.add("${FS.Restaurant_id} in ${intArrayOf(1, 5).sqlEscaped}")``
+``conditions.add("${TS.Restaurant_id} in ${intArrayOf(1, 5).sqlEscaped}")``
 
 Result: ``id in (1, 5)``
 
 Or booleans:
 
-``conditions.add("${FS.Restaurant_isActive} = ${true.sqlEscaped}")``
+``conditions.add("${TS.Restaurant_isActive} = ${true.sqlEscaped}")``
 
 Result: ``isActive = 1``
 
@@ -182,16 +182,16 @@ Then, in your QueryBuilder class:
 override fun join(clauses : QueryJoinClauses) : String?
 {
     clauses.addInnerJoin(
-        table = FS.Restaurant,
-        column = FS.Restaurant_cityId,
-        remoteTable = FS.City,
-        remoteColumn = FS.City_id)
+        table = TS.Restaurant,
+        column = TS.Restaurant_cityId,
+        remoteTable = TS.City,
+        remoteColumn = TS.City_id)
 
     clauses.addInnerJoin(
-        table = FS.City,
-        column = FS.City_countryId,
-        remoteTable = FS.Country,
-        remoteColumn = FS.Country_id)
+        table = TS.City,
+        column = TS.City_countryId,
+        remoteTable = TS.Country,
+        remoteColumn = TS.Country_id)
 
     return clauses.merge()
 }
@@ -225,15 +225,15 @@ fun getList(query : SupportSQLiteQuery) : List<RestaurantJoin>
 ```kotlin
 override fun projection(clauses : QueryProjectionClauses): String
 {
-    clauses.addAllFieldsFromTable(FS.Restaurant)
+    clauses.addAllFieldsFromTable(TS.Restaurant)
 
-    clauses.addField(FS.City_name,
-        fromTable = FS.City,
-        projectAs = FS.RestaurantJoin_cityName)
+    clauses.addField(TS.City_name,
+        fromTable = TS.City,
+        projectAs = TS.RestaurantJoin_cityName)
 
-    clauses.addField(FS.Country_name,
-        fromTable = FS.Country,
-        projectAs = FS.RestaurantJoin_countryName)
+    clauses.addField(TS.Country_name,
+        fromTable = TS.Country,
+        projectAs = TS.RestaurantJoin_countryName)
 
     return clauses.merge()
 }
@@ -256,21 +256,21 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
 {
     constructor(filter: RestaurantFilter) : super(filter)
 
-    override fun tableName() : String? = FS.Restaurant
+    override fun tableName() : String? = TS.Restaurant
 
     override fun where(conditions: QueryWhereConditions) : String?
     {
-        conditions.addSearchConditions(search, onColumns = arrayOf(FS.Restaurant_name, FS.Restaurant_description))
+        conditions.addSearchConditions(search, onColumns = arrayOf(TS.Restaurant_name, TS.Restaurant_description))
         return conditions.mergeWithAnd()
     }
 
     override fun projection(clauses : QueryProjectionClauses): String
     {
-        clauses.addAllFieldsFromTable(FS.Restaurant)
+        clauses.addAllFieldsFromTable(TS.Restaurant)
     
-        clauses.addField(FS.City_name,
-            fromTable = FS.City,
-            projectAs = FS.RestaurantJoin_cityName)
+        clauses.addField(TS.City_name,
+            fromTable = TS.City,
+            projectAs = TS.RestaurantJoin_cityName)
     
         return clauses.merge()
     }
@@ -278,15 +278,15 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
     override fun join(clauses : QueryJoinClauses) : String?
     {
         clauses.addInnerJoin(
-            table = FS.City,
-            column = FS.City_countryId,
-            remoteTable = FS.Country,
-            remoteColumn = FS.Country_id)
+            table = TS.City,
+            column = TS.City_countryId,
+            remoteTable = TS.Country,
+            remoteColumn = TS.Country_id)
     
         return clauses.merge()
     }
 
-    override fun orderBy() : String? = "${FS.Restaurant_id} asc"
+    override fun orderBy() : String? = "${TS.Restaurant_id} asc"
 }
 ```
 
@@ -295,37 +295,37 @@ If you need a more functional style, you can write the same query builder with t
 ```kotlin
 fun RestaurantFilter.toSQLiteQuery() : SupportSQLiteQuery =
     this.toQueryBuilder(
-        tableName = FS.Restaurant,
+        tableName = TS.Restaurant,
         join = join@ { clauses ->
             clauses.addInnerJoin(
-                table = FS.Restaurant,
-                column = FS.Restaurant_cityId,
-                remoteTable = FS.City,
-                remoteColumn = FS.City_id)
+                table = TS.Restaurant,
+                column = TS.Restaurant_cityId,
+                remoteTable = TS.City,
+                remoteColumn = TS.City_id)
 
             return@join clauses.merge()
         },
         projection = projection@ { clauses ->
-            clauses.addAllFieldsFromTable(FS.Restaurant)
+            clauses.addAllFieldsFromTable(TS.Restaurant)
 
             clauses.addField(
-                FS.City_name,
-                fromTable = FS.City,
-                projectAs = FS.RestaurantJoin_cityName)
+                TS.City_name,
+                fromTable = TS.City,
+                projectAs = TS.RestaurantJoin_cityName)
 
             return@projection clauses.merge()
         },
         where = where@ { conditions ->
             if (filter.search!=null)
-                conditions.addSearchConditions(filter.search, onColumns = arrayOf(FS.Restaurant_name))
+                conditions.addSearchConditions(filter.search, onColumns = arrayOf(TS.Restaurant_name))
 
             if (filter.rating!=null)
-                conditions.add("${FS.Restaurant_rating} = ${filter.rating}")
+                conditions.add("${TS.Restaurant_rating} = ${filter.rating}")
 
             return@where conditions.mergeWithAnd()
         },
         orderBy = {
-            "${FS.Restaurant_id} asc"
+            "${TS.Restaurant_id} asc"
         }).build()
 ```
 
@@ -379,6 +379,30 @@ val sql1="select * from ${FS.City} where ${FS.City_countryId} = 3 or ${FS.City_i
 //result: select * from City where countryId = 3 or id = 4 <-- incorrect sql
 val sql2="select * from ${TS.City} where ${TS.City_countryId} = 3 or ${TS.City_id} = 4"
 //result: select * from CitiesTable where country_id = 3 or id = 4 <-- correct sql
+```
+
+```kotlin
+@Entity
+@FieldSchemaClass
+class City
+{
+    @PrimaryKey
+    @ColumnInfo
+    val id : Int = 0
+
+    @ColumnInfo
+    val name : String = ""
+
+    @ColumnInfo
+    val countryId : Int = 0
+}
+```
+
+```kotlin
+val sql1="select * from ${FS.City} where ${FS.City_countryId} = 3 or ${FS.City_id} = 4"
+//result: select * from City where countryId = 3 or id = 4 <-- correct sql
+val sql2="select * from ${TS.City} where ${TS.City_countryId} = 3 or ${TS.City_id} = 4"
+//result: select * from City where countryId = 3 or id = 4 <-- correct sql
 ```
 
 ### Best practices <a name="bestpractices"></a>
