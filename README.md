@@ -7,19 +7,19 @@
 ```
 allprojects {
     repositories {
-        maven { url 'https://jitpack.io' }
+        maven { url 'http://maven.andob.info/reporitory/open_source' }
     }
 }
 ```
 ```
 dependencies {
-    implementation ('com.github.andob:ROOM-Dynamic-Dao:v1.1.5') {
+    implementation 'ro.andob.fieldschema:annotations:0.3.4'
+    kapt 'ro.andob.fieldschema:fs-processor:0.3.4'
+    kapt 'ro.andob.fieldschema:ts-processor-room:0.3.4'
+    
+    implementation ('ro.andob.roomdynamicdao:dyndao:1.1.6') {
         exclude group: 'androidx.room'
     }
-    
-    implementation 'com.github.yatatsu.FieldSchema:annotations:0.3.0'
-    kapt 'com.github.andob.FieldSchema:processor:0.3.3'
-    kapt 'com.github.andob.FieldSchema:processor-room:0.3.3'
 }
 ```
 

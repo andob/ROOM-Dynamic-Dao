@@ -4,11 +4,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "ro.dobrescuandrei.roomdynamicdaosample"
         minSdkVersion 14
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -29,12 +29,12 @@ android {
 
 dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
-    implementation 'androidx.room:room-runtime:2.1.0-alpha06'
-    kapt 'androidx.room:room-compiler:2.1.0-alpha06'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.room:room-runtime:2.2.5'
+    kapt 'androidx.room:room-compiler:2.2.5'
 
-    implementation 'com.github.andob:ROOM-Dynamic-Dao:v1.1.1'
-    implementation 'com.github.yatatsu.FieldSchema:annotations:0.3.0'
-    kapt 'com.github.andob.FieldSchema:processor:0.3.3'
-    kapt 'com.github.andob.FieldSchema:processor-room:0.3.3'
+    implementation project(":dyndao")
+    implementation 'ro.andob.fieldschema:annotations:0.3.4'
+    kapt 'ro.andob.fieldschema:fs-processor:0.3.4'
+    kapt 'ro.andob.fieldschema:fs-processor-room:0.3.4'
 }

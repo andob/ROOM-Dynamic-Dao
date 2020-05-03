@@ -1,16 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'kotlin-kapt'
-
-group='com.github.jitpack'
-version '1.0'
+apply plugin: 'digital.wup.android-maven-publish'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -32,10 +29,32 @@ android {
 
 dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.room:room-runtime:2.1.0-alpha06'
-    api 'com.github.andob.ROOM-Dynamic-Dao:basefilter:v1.1.1'
+    implementation 'androidx.room:room-runtime:2.2.5'
+    api project(":basefilter")
 
+    testImplementation"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'junit:junit:4.12'
-    testImplementation 'com.github.yatatsu.FieldSchema:annotations:0.3.0'
-    kaptTest 'com.github.andob.FieldSchema:processor:0.3.1'
+    testImplementation 'ro.andob.fieldschema:annotations:0.3.4'
+    kaptTest 'ro.andob.fieldschema:fs-processor:0.3.4'
+}
+
+publishing {
+    publications {
+        repositories.maven {
+            url 'http://maven.andob.info/repository/open_source/'
+            credentials {
+                username "$System.env.MAVEN_PUBLISH_USERNAME"
+                password "$System.env.MAVEN_PUBLISH_PASSWORD"
+            }
+        }
+
+        android.libraryVariants.all { variant ->
+            "maven${variant.name.capitalize()}Aar"(MavenPublication) {
+                from components.findByName("android${variant.name.capitalize()}")
+                groupId 'ro.andob.roomdynamicdao'
+                artifactId 'dyndao'
+                version '1.1.6'
+            }
+        }
+    }
 }
