@@ -8,9 +8,7 @@ class QueryWhereConditions : LinkedList<String>()
     {
         if (search!=null&&search.isNotEmpty())
         {
-            val escapedSearch=SQLEscape.escapeString(search)
-            val unquotedEscapedSearch=escapedSearch.substring(1, escapedSearch.length-1)
-            val likeArgument="'%$unquotedEscapedSearch%'"
+            val likeArgument="'%${SQLEscape.escapeAndUnquoteString(search)}%'"
 
             if (onColumns.size==1)
                 add(" ${onColumns[0]} like $likeArgument ")

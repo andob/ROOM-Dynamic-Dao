@@ -32,6 +32,14 @@ object SQLEscape
     }
 
     @JvmStatic
+    fun escapeAndUnquoteString(string : String) : String
+    {
+        val escapedString=SQLEscape.escapeString(string)
+        val unquotedEscapedString=escapedString.substring(1, escapedString.length-1)
+        return unquotedEscapedString
+    }
+
+    @JvmStatic
     fun escapeStringArray(values : Array<String>) : String
     {
         val tokens=mutableListOf<String>()

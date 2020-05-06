@@ -53,7 +53,7 @@ publishing {
                 from components.findByName("android${variant.name.capitalize()}")
                 groupId 'ro.andob.roomdynamicdao'
                 artifactId 'dyndao'
-                version '1.1.6'
+                version '1.1.7'
             }
         }
     }
