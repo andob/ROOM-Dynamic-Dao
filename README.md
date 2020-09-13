@@ -17,9 +17,7 @@ dependencies {
     kapt 'ro.andob.fieldschema:fs-processor:0.3.4'
     kapt 'ro.andob.fieldschema:ts-processor-room:0.3.4'
     
-    implementation ('ro.andob.roomdynamicdao:dyndao:1.1.9') {
-        exclude group: 'androidx.room'
-    }
+    implementation 'ro.andob.roomdynamicdao:dyndao:1.1.9'
 }
 ```
 
