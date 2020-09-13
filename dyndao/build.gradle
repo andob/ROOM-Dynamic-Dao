@@ -4,10 +4,10 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'digital.wup.android-maven-publish'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
     }
@@ -32,8 +32,7 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.2.5'
     api project(":basefilter")
 
-    testImplementation"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     testImplementation 'ro.andob.fieldschema:annotations:0.3.4'
     kaptTest 'ro.andob.fieldschema:fs-processor:0.3.4'
 }
@@ -53,7 +52,7 @@ publishing {
                 from components.findByName("android${variant.name.capitalize()}")
                 groupId 'ro.andob.roomdynamicdao'
                 artifactId 'dyndao'
-                version '1.1.8'
+                version '1.1.9'
             }
         }
     }
