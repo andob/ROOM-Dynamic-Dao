@@ -32,7 +32,7 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.2.5'
     api project(":basefilter")
 
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
     testImplementation 'ro.andob.fieldschema:annotations:0.3.4'
     kaptTest 'ro.andob.fieldschema:fs-processor:0.3.4'
 }

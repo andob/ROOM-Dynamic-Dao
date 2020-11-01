@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -36,5 +35,5 @@ dependencies {
     implementation project(":dyndao")
     implementation 'ro.andob.fieldschema:annotations:0.3.4'
     kapt 'ro.andob.fieldschema:fs-processor:0.3.4'
-    kapt 'ro.andob.fieldschema:fs-processor-room:0.3.4'
+    kapt 'ro.andob.fieldschema:ts-processor-room:0.3.4'
 }
