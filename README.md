@@ -17,7 +17,8 @@ dependencies {
     kapt 'ro.andob.fieldschema:fs-processor:0.3.4'
     kapt 'ro.andob.fieldschema:ts-processor-room:0.3.4'
     
-    implementation 'ro.andob.roomdynamicdao:dyndao:1.1.9'
+    implementation ('ro.andob.roomdynamicdao:dyndao:1.2.0')
+        { exclude group: 'androidx.room' }
 }
 ```
 
@@ -30,6 +31,7 @@ Because in ROOM, DAO methods are very limited due to the fact that you write the
 class Restaurant
 {
     @PrimaryKey(autoGenerate = true)
+    @NotNull
     var id : Int = 0
 
     @ColumnInfo

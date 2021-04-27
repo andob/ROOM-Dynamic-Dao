@@ -5,12 +5,14 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.yatatsu.fieldschema.annotations.FieldSchemaClass
+import org.jetbrains.annotations.NotNull
 
 @Entity
 @FieldSchemaClass
 open class Restaurant
 {
     @PrimaryKey(autoGenerate = true)
+    @NotNull
     var id : Int = 0
 
     @ColumnInfo

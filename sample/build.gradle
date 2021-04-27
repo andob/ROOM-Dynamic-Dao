@@ -29,8 +29,8 @@ android {
 dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.room:room-runtime:2.2.5'
-    kapt 'androidx.room:room-compiler:2.2.5'
+    implementation 'androidx.room:room-runtime:2.3.0'
+    kapt 'androidx.room:room-compiler:2.3.0'
 
     implementation project(":dyndao")
     implementation 'ro.andob.fieldschema:annotations:0.3.4'

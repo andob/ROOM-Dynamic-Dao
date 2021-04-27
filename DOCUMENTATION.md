@@ -142,6 +142,7 @@ To ``Restaurant`` table. We also have:
 class City
 {
     @PrimaryKey
+    @NotNull
     val id : Int = 0
 
     @ColumnInfo
@@ -158,6 +159,7 @@ class City
 class Country
 {
     @PrimaryKey
+    @NotNull
     val id : Int = 0
 
     @ColumnInfo
@@ -363,6 +365,7 @@ The [FieldSchema](https://github.com/andob/FieldSchema) annotation processor lib
 class City
 {
     @PrimaryKey
+    @NotNull
     @ColumnInfo
     val id : Int = 0
 
@@ -387,6 +390,7 @@ val sql2="select * from ${TS.City} where ${TS.City_countryId} = 3 or ${TS.City_i
 class City
 {
     @PrimaryKey
+    @NotNull
     @ColumnInfo
     val id : Int = 0
 
