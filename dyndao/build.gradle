@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'digital.wup.android-maven-publish'
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 30
@@ -37,22 +37,22 @@ dependencies {
     kaptTest 'ro.andob.fieldschema:fs-processor:0.3.4'
 }
 
-publishing {
-    publications {
-        repositories.maven {
-            url 'https://maven.andob.info/repository/open_source/'
-            credentials {
-                username "$System.env.MAVEN_PUBLISH_USERNAME"
-                password "$System.env.MAVEN_PUBLISH_PASSWORD"
+project.afterEvaluate {
+    publishing {
+        publications {
+            repositories.maven {
+                url 'https://maven.andob.info/repository/open_source/'
+                credentials {
+                    username "$System.env.MAVEN_PUBLISH_USERNAME"
+                    password "$System.env.MAVEN_PUBLISH_PASSWORD"
+                }
             }
-        }
 
-        android.libraryVariants.all { variant ->
-            "maven${variant.name.capitalize()}Aar"(MavenPublication) {
-                from components.findByName("android${variant.name.capitalize()}")
+            maven(MavenPublication) {
                 groupId 'ro.andob.roomdynamicdao'
                 artifactId 'dyndao'
                 version '1.2.0'
+                artifact(bundleReleaseAar)
             }
         }
     }
