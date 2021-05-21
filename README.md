@@ -99,27 +99,27 @@ interface RestaurantDao
 ```
 
 ```kotlin
-val restaurants=if (filter==null)
+val restaurants = if (filter == null)
 {
-    if (search!=null)
+    if (search != null)
         database.restaurantDao().search(search)
     else database.restaurantDao().getAll()
 }
-else if (filter.boundingBox!=null&&filter.rating!=null)
+else if (filter.boundingBox != null && filter.rating != null)
 {
-    if (search!=null)
+    if (search != null)
         database.restaurantDao().searchAroundPointWithRating(filter.boundingBox?.northWestLat?:0.0, filter.boundingBox?.northWestLng?:0.0, filter.boundingBox?.southEastLat?:0.0, filter.boundingBox?.southEastLng?:0.0, search, filter.rating?:0)
     else database.restaurantDao().getAllAroundPointWithRating(filter.boundingBox?.northWestLat?:0.0, filter.boundingBox?.northWestLng?:0.0, filter.boundingBox?.southEastLat?:0.0, filter.boundingBox?.southEastLng?:0.0, filter.rating?:0)
 }
-else if (filter.boundingBox!=null)
+else if (filter.boundingBox != null)
 {
-    if (search!=null)
+    if (search != null)
         database.restaurantDao().searchAroundPoint(filter.boundingBox?.northWestLat?:0.0, filter.boundingBox?.northWestLng?:0.0, filter.boundingBox?.southEastLat?:0.0, filter.boundingBox?.southEastLng?:0.0, search)
     else database.restaurantDao().getAllAroundPoint(filter.boundingBox?.northWestLat?:0.0, filter.boundingBox?.northWestLng?:0.0, filter.boundingBox?.southEastLat?:0.0, filter.boundingBox?.southEastLng?:0.0)
 }
 else
 {
-    if (search!=null)
+    if (search != null)
         database.restaurantDao().searchWithRating(filter.rating?:0, search)
     else database.restaurantDao().getAllWithRating(filter.rating?:0)
 }
@@ -135,7 +135,7 @@ Annotate your model with ``FieldSchemaClass``. The annotation processor will gen
 @Entity
 @FieldSchemaClass
 class Restaurant
-``` 
+```
 
 Create a filter model for your main model:
 
@@ -163,19 +163,19 @@ Create a class that extends QueryBuilder:
 ```kotlin
 class RestaurantListQueryBuilder : QueryBuilder<RestaurantFilter>
 {
-    constructor(filter: RestaurantFilter) : super(filter)
+    constructor(filter : RestaurantFilter) : super(filter)
 
-    override fun tableName(): String? = TS.Restaurant
+    override fun tableName() : String? = TS.Restaurant
 
-    override fun where(conditions: QueryWhereConditions): String?
+    override fun where(conditions : QueryWhereConditions) : String?
     {
-        if (filter.search!=null)
+        if (filter.search != null)
             conditions.addSearchConditions(filter.search, onColumns = arrayOf(TS.Restaurant_name))
 
-        if (filter.rating!=null)
+        if (filter.rating != null)
             conditions.add("${TS.Restaurant_rating} = ${filter.rating}")
 
-        if (filter.boundingBox!=null)
+        if (filter.boundingBox != null)
         {
             conditions.add("${TS.Restaurant_latitude}  <= ${filter.boundingBox?.northWestLat}")
             conditions.add("${TS.Restaurant_latitude}  >= ${filter.boundingBox?.southEastLat}")
@@ -188,6 +188,8 @@ class RestaurantListQueryBuilder : QueryBuilder<RestaurantFilter>
 }
 ```
 
+
+
 ```kotlin
 @Dao
 interface RestaurantDao
@@ -196,6 +198,8 @@ interface RestaurantDao
     fun getList(query : SupportSQLiteQuery) : List<Restaurant>
 }
 ```
+
+
 
 ```
 -- result:
@@ -206,8 +210,10 @@ select * from Restaurant where name like '%something%' and rating = 5
 -- and so on, depending on the use case
 ```
 
+
+
 ```kotlin
-val restaurants=database.restaurantDao().getList(
+val restaurants = database.restaurantDao().getList(
 	RestaurantListQueryBuilder(filter).build())
 ```
 

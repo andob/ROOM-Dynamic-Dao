@@ -8,7 +8,6 @@
 2. [How to build where conditions](#where)
 3. [How to join other tables](#join)
 4. [How to project columns from tables](#project)
-5. [OOP vs FP QueryBuilder styles](#oopfp)
 6. [How to change default settings](#defaults)
 7. [Custom table / column names and FieldSchema](#fsvsts)
 8. [Best practices](#bestpractices)
@@ -18,35 +17,35 @@
 ```kotlin
 class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
 {
-    constructor(filter: RestaurantFilter) : super(filter)
+    constructor(filter : RestaurantFilter) : super(filter)
 
     //used to specify table name
     override fun tableName() : String? = TS.Restaurant
 
     //used to specify where conditions
-    override fun where(conditions : QueryWhereConditions): String? = "1=1"
+    override fun where(conditions : QueryWhereConditions) : String? = "1=1"
 
     //enable pagination. By default, pagination is DISABLED
     //to change this default behavior, see How to change default settings section
     override fun isPaginationEnabled() : Boolean = true
 
     //column projections
-    override fun projection(clauses : QueryProjectionClauses): String = "*"
+    override fun projection(clauses : QueryProjectionClauses) : String = "*"
 
     //use for joins
-    override fun join(clauses : QueryJoinClauses): String? = null
+    override fun join(clauses : QueryJoinClauses) : String? = null
 
     //specify order by
-    override fun orderBy(): String? = "${TS.Restaurant_id} asc"
+    override fun orderBy() : String? = "${TS.Restaurant_id} asc"
 }
 ```
 
 ### How to build where conditions <a name="where"></a>
 
-Use ``addSearchConditions`` for search conditions:
+Use ``addSearchConditions`` on search conditions:
 
 ```kotlin
-override fun where(conditions: QueryWhereConditions) : String?
+override fun where(conditions : QueryWhereConditions) : String?
 {
     conditions.addSearchConditions(search, onColumns = arrayOf(TS.Restaurant_name, TS.Restaurant_description))
     return conditions.mergeWithAnd()
@@ -58,7 +57,7 @@ The result will be ``where name like '%search%' or description like '%search%'``
 Use ``mergeWithAnd`` to generate a where condition set delimited by and:
 
 ```kotlin
-override fun where(conditions: QueryWhereConditions) : String?
+override fun where(conditions : QueryWhereConditions) : String?
 {
     conditions.addSearchConditions(search, onColumns = arrayOf(TS.Restaurant_name, TS.Restaurant_description))
     conditions.add("${TS.Restaurant_id} = 1")
@@ -78,12 +77,12 @@ You can also create complex conditions with paranthesis:
 ```kotlin
 override fun where(conditions : QueryWhereConditions) : String?
 {
-    val firstConditionSet=QueryWhereConditions()
+    val firstConditionSet = QueryWhereConditions()
     firstConditionSet.add("${TS.Restaurant_id} = 1")
     firstConditionSet.add("${TS.Restaurant_rating} = 5")
     conditions.add("(${firstConditionSet.mergeWithAnd()})")
 
-    val secondConditionSet=QueryWhereConditions()
+    val secondConditionSet = QueryWhereConditions()
     secondConditionSet.add("${TS.Restaurant_id} = 2")
     secondConditionSet.add("${TS.Restaurant_rating} = 3")
     conditions.add("(${secondConditionSet.mergeWithAnd()})")
@@ -152,6 +151,8 @@ class City
     val countryId : Int = 0
 }
 ```
+
+
 
 ```kotlin
 @Entity
@@ -249,95 +250,6 @@ select Restaurant.*,
        Country.name as countryName
 ```
 
-### OOP vs FP QueryBuilder styles <a name="oopfp"></a>
-
-So far, your QueryBuilder looks something like this:
-
-```kotlin
-class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
-{
-    constructor(filter: RestaurantFilter) : super(filter)
-
-    override fun tableName() : String? = TS.Restaurant
-
-    override fun where(conditions: QueryWhereConditions) : String?
-    {
-        conditions.addSearchConditions(search, onColumns = arrayOf(TS.Restaurant_name, TS.Restaurant_description))
-        return conditions.mergeWithAnd()
-    }
-
-    override fun projection(clauses : QueryProjectionClauses): String
-    {
-        clauses.addAllFieldsFromTable(TS.Restaurant)
-    
-        clauses.addField(TS.City_name,
-            fromTable = TS.City,
-            projectAs = TS.RestaurantJoin_cityName)
-    
-        return clauses.merge()
-    }
-
-    override fun join(clauses : QueryJoinClauses) : String?
-    {
-        clauses.addInnerJoin(
-            table = TS.City,
-            column = TS.City_countryId,
-            remoteTable = TS.Country,
-            remoteColumn = TS.Country_id)
-    
-        return clauses.merge()
-    }
-
-    override fun orderBy() : String? = "${TS.Restaurant_id} asc"
-}
-```
-
-If you need a more functional style, you can write the same query builder with the ``BaseFilter.toQueryBuilder`` extension function:
-
-```kotlin
-fun RestaurantFilter.toSQLiteQuery() : SupportSQLiteQuery =
-    this.toQueryBuilder(
-        tableName = TS.Restaurant,
-        join = join@ { clauses ->
-            clauses.addInnerJoin(
-                table = TS.Restaurant,
-                column = TS.Restaurant_cityId,
-                remoteTable = TS.City,
-                remoteColumn = TS.City_id)
-
-            return@join clauses.merge()
-        },
-        projection = projection@ { clauses ->
-            clauses.addAllFieldsFromTable(TS.Restaurant)
-
-            clauses.addField(
-                TS.City_name,
-                fromTable = TS.City,
-                projectAs = TS.RestaurantJoin_cityName)
-
-            return@projection clauses.merge()
-        },
-        where = where@ { conditions ->
-            if (filter.search!=null)
-                conditions.addSearchConditions(filter.search, onColumns = arrayOf(TS.Restaurant_name))
-
-            if (filter.rating!=null)
-                conditions.add("${TS.Restaurant_rating} = ${filter.rating}")
-
-            return@where conditions.mergeWithAnd()
-        },
-        orderBy = {
-            "${TS.Restaurant_id} asc"
-        }).build()
-```
-
-```kotlin
-val filters=listOf<RestaurantFilter>()
-filters.map { filter -> filter.toSQLiteQuery() }
-    .flatMap { query ->  DB.restaurantDao().getAll(query) }
-    .forEach { restaurant -> println(restaurant) }
-``` 
-
 ### How to change default settings <a name="defaults"></a>
 
 ```kotlin
@@ -347,8 +259,8 @@ class App : Application()
     {
         super.onCreate()
 
-        BaseFilterDefaults.limit=10000
-        QueryBuilderDefaults.isPaginationEnabled=true
+        BaseFilterDefaults.limit = 10000
+        QueryBuilderDefaults.isPaginationEnabled = true
     }
 }
 ```
