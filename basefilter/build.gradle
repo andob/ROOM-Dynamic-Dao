@@ -24,7 +24,7 @@ publishing {
         maven(MavenPublication) {
             groupId 'ro.andob.roomdynamicdao'
             artifactId 'basefilter'
-            version '1.2.0'
+            version '1.2.1'
             from components.java
         }
     }
