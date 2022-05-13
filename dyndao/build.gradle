@@ -16,6 +16,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    publishing {
+        singleVariant("release") {}
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -46,11 +49,11 @@ project.afterEvaluate {
                 }
             }
 
-            maven(MavenPublication) {
+            release(MavenPublication) {
+                from components.release
                 groupId 'ro.andob.roomdynamicdao'
                 artifactId 'dyndao'
                 version '1.2.1'
-                artifact(bundleReleaseAar)
             }
         }
     }
