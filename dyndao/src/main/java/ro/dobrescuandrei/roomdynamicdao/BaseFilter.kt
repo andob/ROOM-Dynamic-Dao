@@ -1,4 +1,4 @@
-package ro.andreidobrescu.basefilter
+package ro.dobrescuandrei.roomdynamicdao
 
 import java.io.Serializable
 

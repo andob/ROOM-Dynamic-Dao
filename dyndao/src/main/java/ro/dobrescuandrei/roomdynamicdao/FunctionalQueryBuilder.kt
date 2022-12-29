@@ -1,14 +1,13 @@
 package ro.dobrescuandrei.roomdynamicdao
 
-import ro.andreidobrescu.basefilter.BaseFilter
-
-fun <FILTER : BaseFilter> FILTER.toQueryBuilder(
+fun <FILTER : BaseFilter> FILTER.toQueryBuilder
+(
     tableName : String,
     projection : QueryBuilder<FILTER>.(QueryProjectionClauses) -> (String) = { "*" },
     join : QueryBuilder<FILTER>.(QueryJoinClauses) -> (String?) = { null },
     where : QueryBuilder<FILTER>.(QueryWhereConditions) -> (String?) = { null },
     orderBy : QueryBuilder<FILTER>.() -> (String?) = { null },
-    isPaginationEnabled : Boolean = QueryBuilderDefaults.isPaginationEnabled
+    isPaginationEnabled : Boolean = QueryBuilderDefaults.isPaginationEnabled,
 ) : QueryBuilder<FILTER> =
     object : QueryBuilder<FILTER>(this)
     {

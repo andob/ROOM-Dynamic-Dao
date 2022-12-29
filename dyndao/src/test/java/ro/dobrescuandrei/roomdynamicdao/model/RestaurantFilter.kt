@@ -1,6 +1,6 @@
 package ro.dobrescuandrei.roomdynamicdao.model
 
-import ro.andreidobrescu.basefilter.BaseFilter
+import ro.dobrescuandrei.roomdynamicdao.BaseFilter
 
 class RestaurantFilter : BaseFilter()
 {

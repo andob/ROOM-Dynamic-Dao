@@ -3,7 +3,6 @@ package ro.dobrescuandrei.roomdynamicdao
 import com.yatatsu.fieldschema.FS
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import ro.andreidobrescu.basefilter.BaseFilterDefaults
 import ro.dobrescuandrei.roomdynamicdao.model.RestaurantFilter
 import ro.dobrescuandrei.roomdynamicdao.querybuilder.RestaurantJoinListQueryBuilder
 

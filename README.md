@@ -13,12 +13,10 @@ allprojects {
 ```
 ```
 dependencies {
+    implementation 'ro.andob.roomdynamicdao:dyndao:1.2.2'
     implementation 'ro.andob.fieldschema:annotations:0.3.4'
     kapt 'ro.andob.fieldschema:fs-processor:0.3.4'
     kapt 'ro.andob.fieldschema:ts-processor-room:0.3.4'
-    
-    implementation ('ro.andob.roomdynamicdao:dyndao:1.2.1')
-        { exclude group: 'androidx.room' }
 }
 ```
 

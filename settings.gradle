@@ -1,1 +1,2 @@
-include ':sample', ':dyndao', ':basefilter'
+include ':dyndao'
+include ':sample'

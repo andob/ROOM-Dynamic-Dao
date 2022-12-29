@@ -1,7 +1,6 @@
 package ro.dobrescuandrei.roomdynamicdao
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import ro.andreidobrescu.basefilter.BaseFilter
 
 abstract class QueryBuilder<FILTER : BaseFilter>
 (

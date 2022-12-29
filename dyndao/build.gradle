@@ -4,10 +4,11 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'maven-publish'
 
 android {
-    compileSdkVersion 31
+    namespace 'ro.dobrescuandrei.roomdynamicdao'
+    compileSdkVersion 33
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 31
+        targetSdkVersion 33
     }
     compileOptions {
         targetCompatibility 1.8
@@ -25,13 +26,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.room:room-runtime:2.3.0'
-    api project(":basefilter")
+    implementation 'androidx.room:room-runtime:2.4.3'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'ro.andob.fieldschema:annotations:0.3.4'
@@ -53,7 +52,7 @@ project.afterEvaluate {
                 from components.release
                 groupId 'ro.andob.roomdynamicdao'
                 artifactId 'dyndao'
-                version '1.2.1'
+                version '1.2.2'
             }
         }
     }

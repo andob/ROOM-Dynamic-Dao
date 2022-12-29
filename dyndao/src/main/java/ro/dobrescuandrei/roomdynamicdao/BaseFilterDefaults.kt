@@ -1,4 +1,4 @@
-package ro.andreidobrescu.basefilter
+package ro.dobrescuandrei.roomdynamicdao
 
 object BaseFilterDefaults
 {

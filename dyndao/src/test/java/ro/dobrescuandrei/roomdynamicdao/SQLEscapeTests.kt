@@ -4,7 +4,6 @@ import com.yatatsu.fieldschema.FS
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
-import ro.andreidobrescu.basefilter.BaseFilter
 import ro.dobrescuandrei.roomdynamicdao.model.Restaurant
 
 class SQLEscapeTests

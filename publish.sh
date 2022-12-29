@@ -7,7 +7,6 @@ read -s -r MAVEN_PUBLISH_PASSWORD
 
 echo "Publishing..."
 
-./gradlew :basefilter:publish
 ./gradlew :dyndao:publish
 
 set +o allexport
