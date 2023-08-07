@@ -8,12 +8,12 @@ import ro.dobrescuandrei.roomdynamicdaosample.model.RestaurantFilter
 
 class MainActivity : AppCompatActivity()
 {
-    override fun onCreate(savedInstanceState: Bundle?)
+    override fun onCreate(savedInstanceState : Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val database=Room.inMemoryDatabaseBuilder(this, AppDB::class.java)
+        val database = Room.inMemoryDatabaseBuilder(this, AppDB::class.java)
             .allowMainThreadQueries()
             .build()
 
@@ -21,16 +21,16 @@ class MainActivity : AppCompatActivity()
 
         val search : String? = null
         val filter : RestaurantFilter? = RestaurantFilter()
-        filter?.boundingBox=null
-        filter?.rating=5
+        filter?.boundingBox = null
+        filter?.rating = 5
 
-        val restaurants=if (filter==null)
+        val restaurants = if (filter==null)
         {
             if (search!=null)
                 database.restaurantDao().search(search)
             else database.restaurantDao().getAll()
         }
-        else if (filter.boundingBox!=null&&filter.rating!=null)
+        else if (filter.boundingBox!=null && filter.rating!=null)
         {
             if (search!=null)
                 database.restaurantDao().searchAroundPointWithRating(filter.boundingBox?.northWestLat?:0.0, filter.boundingBox?.northWestLng?:0.0, filter.boundingBox?.southEastLat?:0.0, filter.boundingBox?.southEastLng?:0.0, search, filter.rating?:0)
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity()
 
         if (filter!=null)
         {
-            val restaurants1=database.restaurantDao().getList(RestaurantListQueryBuilder(filter).build())
+            val restaurants1 = database.restaurantDao().getList(RestaurantListQueryBuilder(filter).build())
 
             println(restaurants)
             println(restaurants1)

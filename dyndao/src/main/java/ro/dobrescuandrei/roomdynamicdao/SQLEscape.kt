@@ -13,7 +13,7 @@ object SQLEscape
         }
         catch (ex : Exception)
         {
-            val escaper=StringBuilder()
+            val escaper = StringBuilder()
             escaper.append('\'')
             if (string.indexOf('\'') != -1)
             {
@@ -34,15 +34,15 @@ object SQLEscape
     @JvmStatic
     fun escapeAndUnquoteString(string : String) : String
     {
-        val escapedString=SQLEscape.escapeString(string)
-        val unquotedEscapedString=escapedString.substring(1, escapedString.length-1)
+        val escapedString = SQLEscape.escapeString(string)
+        val unquotedEscapedString = escapedString.substring(1, escapedString.length-1)
         return unquotedEscapedString
     }
 
     @JvmStatic
     fun escapeStringArray(values : Array<String>) : String
     {
-        val tokens=mutableListOf<String>()
+        val tokens = mutableListOf<String>()
         for (token in values)
             tokens.add(escapeString(token))
         return "(${tokens.joinToString(separator = ", ")})"
@@ -51,7 +51,7 @@ object SQLEscape
     @JvmStatic
     fun escapeStringCollection(values : Collection<String>) : String
     {
-        val tokens=mutableListOf<String>()
+        val tokens = mutableListOf<String>()
         for (token in values)
             tokens.add(escapeString(token))
         return "(${tokens.joinToString(separator = ", ")})"
@@ -60,7 +60,7 @@ object SQLEscape
     @JvmStatic
     fun escapeNumberArray(values : IntArray) : String
     {
-        val tokens=mutableListOf<String>()
+        val tokens = mutableListOf<String>()
         for (token in values)
             tokens.add("$token")
         return "(${tokens.joinToString(separator = ", ")})"
@@ -69,7 +69,7 @@ object SQLEscape
     @JvmStatic
     fun escapeNumberArray(values : LongArray) : String
     {
-        val tokens=mutableListOf<String>()
+        val tokens = mutableListOf<String>()
         for (token in values)
             tokens.add("$token")
         return "(${tokens.joinToString(separator = ", ")})"
@@ -78,7 +78,7 @@ object SQLEscape
     @JvmStatic
     fun escapeNumberArray(values : DoubleArray) : String
     {
-        val tokens=mutableListOf<String>()
+        val tokens = mutableListOf<String>()
         for (token in values)
             tokens.add("$token")
         return "(${tokens.joinToString(separator = ", ")})"
@@ -87,7 +87,7 @@ object SQLEscape
     @JvmStatic
     fun escapeNumberArray(values : FloatArray) : String
     {
-        val tokens=mutableListOf<String>()
+        val tokens = mutableListOf<String>()
         for (token in values)
             tokens.add("$token")
         return "(${tokens.joinToString(separator = ", ")})"
@@ -96,7 +96,7 @@ object SQLEscape
     @JvmStatic
     fun escapeNumberCollection(values : Collection<*>) : String
     {
-        val tokens=mutableListOf<String>()
+        val tokens = mutableListOf<String>()
         for (token in values)
             tokens.add(token.toString())
         return "(${tokens.joinToString(separator = ", ")})"

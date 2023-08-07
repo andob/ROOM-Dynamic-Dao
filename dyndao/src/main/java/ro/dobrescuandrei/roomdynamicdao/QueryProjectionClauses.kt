@@ -32,11 +32,11 @@ class QueryProjectionClauses : LinkedList<String>()
 class ProjectionClauseBuilder
 {
     internal lateinit var fieldName : String
-    fun fieldName(fieldName : String) = also { this.fieldName=fieldName }
+    fun fieldName(fieldName : String) = also { this.fieldName = fieldName }
 
     internal lateinit var fromTable : String
-    fun fromTable(fromTable : String) = also { this.fromTable=fromTable }
+    fun fromTable(fromTable : String) = also { this.fromTable = fromTable }
 
     internal lateinit var projectAs : String
-    fun projectAs(projectAs : String) = also { this.projectAs=projectAs }
+    fun projectAs(projectAs : String) = also { this.projectAs = projectAs }
 }

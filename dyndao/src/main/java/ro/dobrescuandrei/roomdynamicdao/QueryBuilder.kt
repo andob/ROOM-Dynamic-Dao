@@ -9,7 +9,7 @@ abstract class QueryBuilder<FILTER : BaseFilter>
 {
     open fun buildSqlString() : String
     {
-        var sql="select ${projection(QueryProjectionClauses())}"
+        var sql = "select ${projection(QueryProjectionClauses())}"
         sql+=" from ${tableName()} "
 
         join(QueryJoinClauses())?.let { join ->
@@ -53,18 +53,18 @@ abstract class QueryBuilder<FILTER : BaseFilter>
     val Boolean.sqlEscaped get() = SQLEscape.escapeBoolean(this)
 
     val Array<*>.sqlEscaped get() =
-        if (firstOrNull()!=null&&first() is String)
+        if (firstOrNull()!=null && first() is String)
             SQLEscape.escapeStringArray(this as Array<String>)
-        else if (firstOrNull()!=null&&first() is Number)
+        else if (firstOrNull()!=null && first() is Number)
             SQLEscape.escapeNumberCollection(toList())
         else if (firstOrNull()!=null)
             throw RuntimeException("Cannot escape ${first()!!::class.java.name}")
         else throw RuntimeException("Cannot escape empty collection")
 
     val Collection<*>.sqlEscaped get() =
-        if (firstOrNull()!=null&&first() is String)
+        if (firstOrNull()!=null && first() is String)
             SQLEscape.escapeStringCollection(this as Collection<String>)
-        else if (firstOrNull()!=null&&first() is Number)
+        else if (firstOrNull()!=null && first() is Number)
             SQLEscape.escapeNumberCollection(this)
         else if (firstOrNull()!=null)
             throw RuntimeException("Cannot escape ${first()!!::class.java.name}")

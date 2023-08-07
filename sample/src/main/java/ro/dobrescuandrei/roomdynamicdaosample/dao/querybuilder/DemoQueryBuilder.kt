@@ -6,7 +6,7 @@ import ro.dobrescuandrei.roomdynamicdaosample.model.RestaurantFilter
 
 class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
 {
-    constructor(filter: RestaurantFilter) : super(filter)
+    constructor(filter : RestaurantFilter) : super(filter)
 
     //used to specify table name
     override fun tableName() = FS.Restaurant
@@ -23,7 +23,7 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
     override fun isPaginationEnabled() = true
 
     //column projections
-    override fun projection(clauses : QueryProjectionClauses): String
+    override fun projection(clauses : QueryProjectionClauses) : String
     {
         clauses.addAllFieldsFromTable(FS.Restaurant)
 
@@ -57,5 +57,5 @@ class DemoQueryBuilder : QueryBuilder<RestaurantFilter>
     }
 
     //specify order by
-    override fun orderBy(): String? = "${FS.Restaurant_id} asc"
+    override fun orderBy() : String? = "${FS.Restaurant_id} asc"
 }

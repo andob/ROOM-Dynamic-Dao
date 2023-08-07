@@ -2,7 +2,7 @@ package ro.dobrescuandrei.roomdynamicdaosample
 
 import ro.dobrescuandrei.roomdynamicdaosample.model.Restaurant
 
-val dummyRestaurants=listOf(
+val dummyRestaurants = listOf(
     Restaurant(id = 1, name = "Restaurant 1", rating = 1, latitude = 0.0, longitude = 0.0),
     Restaurant(id = 2, name = "Restaurant 2", rating = 5, latitude = 1.0, longitude = 1.0),
     Restaurant(id = 3, name = "Restaurant 3", rating = 5, latitude = 2.0, longitude = 2.0),

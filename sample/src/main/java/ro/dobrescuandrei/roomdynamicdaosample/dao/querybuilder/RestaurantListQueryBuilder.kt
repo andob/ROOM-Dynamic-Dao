@@ -7,11 +7,11 @@ import ro.dobrescuandrei.roomdynamicdaosample.model.RestaurantFilter
 
 class RestaurantListQueryBuilder : QueryBuilder<RestaurantFilter>
 {
-    constructor(filter: RestaurantFilter) : super(filter)
+    constructor(filter : RestaurantFilter) : super(filter)
 
-    override fun tableName(): String? = FS.Restaurant
+    override fun tableName() : String? = FS.Restaurant
 
-    override fun where(conditions: QueryWhereConditions): String?
+    override fun where(conditions : QueryWhereConditions) : String?
     {
         if (filter.search!=null)
             conditions.addSearchConditions(filter.search, onColumns = arrayOf(FS.Restaurant_name))
