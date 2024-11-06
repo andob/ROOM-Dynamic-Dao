@@ -5,10 +5,10 @@ apply plugin: 'maven-publish'
 
 android {
     namespace 'ro.dobrescuandrei.roomdynamicdao'
-    compileSdk 33
+    compileSdk 35
     defaultConfig {
-        minSdk 14
-        targetSdk 33
+        minSdk 21
+        targetSdk 35
     }
     compileOptions {
         targetCompatibility JavaVersion.VERSION_17
@@ -23,14 +23,13 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.room:room-runtime:2.5.2'
+    implementation 'androidx.room:room-runtime:2.6.1'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'ro.andob.fieldschema:annotations:0.3.4'
@@ -52,7 +51,7 @@ project.afterEvaluate {
                 from components.release
                 groupId 'ro.andob.roomdynamicdao'
                 artifactId 'dyndao'
-                version '1.2.2'
+                version '1.2.4'
             }
         }
     }
